@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Chenchen Feng builds evolutionary computation research, LLM tooling, and reliable backend systems."
+    />
+    <meta property="og:title" content="Chenchen Feng" />
+    <meta
+      property="og:description"
+      content="A modern editorial-tech portfolio for research, engineering work, writing, and selective personal notes."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/media/profile-photo.jpg" />
+    <meta name="theme-color" content="#f4efe6" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        const redirectedPath = params.get("p");
+        if (!redirectedPath) {
+          return;
+        }
+
+        const isGitHubPages = window.location.hostname.endsWith("github.io");
+        const currentSegments = window.location.pathname.split("/").filter(Boolean);
+        const baseSegments = isGitHubPages && currentSegments.length > 0 ? [currentSegments[0]] : [];
+        const basePath = baseSegments.length > 0 ? "/" + baseSegments.join("/") : "";
+        const query = params.get("q");
+        const hash = params.get("h");
+        const nextUrl =
+          basePath +
+          "/" +
+          redirectedPath.replace(/^\/+/, "") +
+          (query ? "?" + query : "") +
+          (hash ? "#" + hash : "");
+
+        window.history.replaceState(null, "", nextUrl);
+      })();
+    </script>
+    <title>Chenchen Feng</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

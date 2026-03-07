@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        const locationPath = window.location.pathname.split("/").filter(Boolean);
+        const isGitHubPages = window.location.hostname.endsWith("github.io");
+        const baseSegments = isGitHubPages && locationPath.length > 0 ? [locationPath[0]] : [];
+        const restSegments = isGitHubPages ? locationPath.slice(1) : locationPath;
+        const basePath = baseSegments.length > 0 ? "/" + baseSegments.join("/") : "";
+        const redirectPath = restSegments.join("/");
+        const query = window.location.search.slice(1);
+        const hash = window.location.hash.slice(1);
+
+        window.location.replace(
+          basePath +
+            "/?p=" +
+            encodeURIComponent(redirectPath) +
+            (query ? "&q=" + encodeURIComponent(query) : "") +
+            (hash ? "&h=" + encodeURIComponent(hash) : ""),
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
