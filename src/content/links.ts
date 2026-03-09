@@ -19,6 +19,11 @@ export const socialLinksByLocale: Record<Locale, SocialLink[]> = {
       note: "Research identity and publication record",
     },
     {
+      label: "Google Scholar",
+      href: "https://scholar.google.com/citations?user=t9jcbNUAAAAJ",
+      note: "Scholar profile and citation record",
+    },
+    {
       label: "LeetCode",
       href: "https://leetcode.cn/u/star-quake/",
       note: "Algorithm practice and problem solving",
@@ -44,6 +49,11 @@ export const socialLinksByLocale: Record<Locale, SocialLink[]> = {
       label: "ORCID",
       href: "https://orcid.org/0009-0000-1072-8183",
       note: "学术身份与论文记录",
+    },
+    {
+      label: "谷歌学术",
+      href: "https://scholar.google.com/citations?user=t9jcbNUAAAAJ",
+      note: "学术主页与引用记录",
     },
     {
       label: "LeetCode",

@@ -89,8 +89,6 @@ export function SiteShell() {
         <Outlet />
       </main>
       <footer className={styles.footer}>
-        <div className={styles.footerTitle}>{text.footer.title}</div>
-        <p>{text.footer.description}</p>
         <div className={styles.footerCounter} aria-live="polite">
           {visitCountText}
         </div>

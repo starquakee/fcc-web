@@ -61,6 +61,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2026.02 - Present",
         title: "Backend Intern",
         subtitle: "Moonshot AI (Kimi)",
+        logoSrc: "/media/logos/moonshot.webp",
+        logoAlt: "Moonshot AI logo",
         body: [
           "Working on search backend systems that provide content and retrieval support for LLM products.",
           "Focusing on backend engineering for search infrastructure used in LLM-facing workflows.",
@@ -71,6 +73,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2025.12 - 2026.02",
         title: "LLM Post-Training Intern",
         subtitle: "Sangfor",
+        logoSrc: "/media/logos/sangfor.png",
+        logoAlt: "Sangfor logo",
         body: [
           "Worked on post-training for a security-focused large language model.",
           "Covered both supervised fine-tuning (SFT) and reinforcement learning from human feedback (RLHF).",
@@ -91,6 +95,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2024 - Present",
         title: "Master of Computer Science",
         subtitle: "Southern University of Science and Technology",
+        logoSrc: "/media/logos/sustech.jpg",
+        logoAlt: "Southern University of Science and Technology logo",
         body: [
           "Researching evolutionary computation with a focus on Differential Evolution.",
           "Extending research output into open-source code and reproducible systems.",
@@ -101,6 +107,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2020 - 2024",
         title: "Bachelor of Computer Science",
         subtitle: "Southern University of Science and Technology",
+        logoSrc: "/media/logos/sustech.jpg",
+        logoAlt: "Southern University of Science and Technology logo",
         body: [
           "Completed thesis work on MetaDE, a meta-level Differential Evolution framework.",
           "Built a foundation across algorithms, systems, and applied machine learning.",
@@ -151,6 +159,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2026.02 - 至今",
         title: "后端实习生",
         subtitle: "月之暗面（Kimi）",
+        logoSrc: "/media/logos/moonshot.webp",
+        logoAlt: "月之暗面标志",
         body: [
           "参与为 LLM 产品提供内容与检索支撑的搜索后端系统开发。",
           "主要聚焦服务于 LLM 场景的搜索基础设施与后端工程实现。",
@@ -161,6 +171,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2025.12 - 2026.02",
         title: "安全大模型实习生",
         subtitle: "深信服",
+        logoSrc: "/media/logos/sangfor.png",
+        logoAlt: "深信服标志",
         body: [
           "参与安全大模型的 post-training 相关工作。",
           "主要覆盖 SFT 与 RLHF 两类训练流程。",
@@ -181,6 +193,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2024 - 至今",
         title: "计算机科学硕士",
         subtitle: "南方科技大学",
+        logoSrc: "/media/logos/sustech.jpg",
+        logoAlt: "南方科技大学标志",
         body: [
           "主要研究 Evolutionary Computation，尤其关注 Differential Evolution。",
           "同步推进研究代码开源与可复现实验系统。",
@@ -191,6 +205,8 @@ export const profilesByLocale: Record<Locale, Profile> = {
         period: "2020 - 2024",
         title: "计算机科学学士",
         subtitle: "南方科技大学",
+        logoSrc: "/media/logos/sustech.jpg",
+        logoAlt: "南方科技大学标志",
         body: [
           "本科毕业设计围绕 MetaDE 展开，这是一个元层 Differential Evolution 框架。",
           "系统学习了算法、系统和应用机器学习相关基础。",

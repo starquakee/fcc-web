@@ -16,6 +16,8 @@ export type TimelineEntry = {
   title: string;
   subtitle: string;
   body: string[];
+  logoSrc?: string;
+  logoAlt?: string;
 };
 
 export type Profile = {

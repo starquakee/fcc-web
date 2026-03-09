@@ -138,7 +138,16 @@ export function HomePage() {
             <div className="timeline-group__title">{text.common.experience}</div>
             {experienceEntries.map((entry) => (
               <article key={`${entry.period}-${entry.title}`} className="timeline-card">
-                <div className="timeline-card__period">{entry.period}</div>
+                <div className="timeline-card__period">
+                  <span>{entry.period}</span>
+                  {entry.logoSrc ? (
+                    <img
+                      src={entry.logoSrc}
+                      alt={entry.logoAlt ?? entry.subtitle}
+                      className="timeline-card__logo"
+                    />
+                  ) : null}
+                </div>
                 <div className="timeline-card__body">
                   <h3>{entry.title}</h3>
                   <p className="timeline-card__subtitle">{entry.subtitle}</p>
@@ -153,7 +162,16 @@ export function HomePage() {
             <div className="timeline-group__title">{text.common.education}</div>
             {educationEntries.map((entry) => (
               <article key={`${entry.period}-${entry.title}`} className="timeline-card">
-                <div className="timeline-card__period">{entry.period}</div>
+                <div className="timeline-card__period">
+                  <span>{entry.period}</span>
+                  {entry.logoSrc ? (
+                    <img
+                      src={entry.logoSrc}
+                      alt={entry.logoAlt ?? entry.subtitle}
+                      className="timeline-card__logo"
+                    />
+                  ) : null}
+                </div>
                 <div className="timeline-card__body">
                   <h3>{entry.title}</h3>
                   <p className="timeline-card__subtitle">{entry.subtitle}</p>
@@ -197,9 +215,6 @@ export function HomePage() {
           <div>
             <h2>{text.home.contactTitle}</h2>
           </div>
-          <a className="button button--primary" href={`mailto:${profile.email}`}>
-            {profile.email}
-          </a>
         </div>
         <div className="contact-grid">
           {socialLinks.map((link) => (

@@ -13,8 +13,6 @@ type SiteText = {
     memory: string;
   };
   footer: {
-    title: string;
-    description: string;
     email: string;
     visits: string;
     visitsPreview: string;
@@ -105,9 +103,6 @@ export const siteText: Record<Locale, SiteText> = {
       memory: "Notes",
     },
     footer: {
-      title: "Built for clarity, memory, and strong interfaces.",
-      description:
-        "This site is a lightweight static React build with a manual content layer, designed for GitHub Pages and future custom-domain deployment.",
       email: "Email",
       visits: "Visits",
       visitsPreview: "Visit counter starts on the deployed site.",
@@ -201,8 +196,6 @@ export const siteText: Record<Locale, SiteText> = {
       memory: "小记",
     },
     footer: {
-      title: "为清晰表达、长期记录与可靠界面而构建。",
-      description: "本站基于轻量静态 React 构建，内容采用手工维护的数据层，适合 GitHub Pages 与后续自定义域名部署。",
       email: "邮箱",
       visits: "访问量",
       visitsPreview: "访问计数会在部署后开始记录。",
