@@ -20,7 +20,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
       "Chenchen Feng is a graduate student focused on evolutionary computation, LLM systems, and backend engineering.",
     heroStats: [
       { label: "Journal papers", value: "2" },
-      { label: "Systems shipped", value: "4" },
+      { label: "Internships", value: "3" },
       { label: "Anime tracked", value: "500+" },
     ],
     focusAreas: [
@@ -133,7 +133,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     seoDescription: "冯晨晨，研究方向包括 Evolutionary Computation、LLM 系统以及后端工程。",
     heroStats: [
       { label: "期刊论文", value: "2" },
-      { label: "已完成系统", value: "4" },
+      { label: "实习经历", value: "3" },
       { label: "动画记录", value: "500+" },
     ],
     focusAreas: [
