@@ -5,13 +5,13 @@ export const profilesByLocale: Record<Locale, Profile> = {
   en: {
     name: "Chenchen Feng",
     role: "Graduate student building evolutionary computation research, LLM applications, and dependable backend systems.",
-    heroTitle: "Building dependable AI systems for research and real-world use.",
+    heroTitle: "Hi, I'm Chenchen Feng — a second-year CS Master's student.",
     shortRole: "EC Researcher + Systems Builder",
     location: "Shenzhen, China",
     institution: "Southern University of Science and Technology",
     email: "chenchenfengcn@gmail.com",
     description:
-      "I work at the intersection of optimization, machine intelligence, and practical software systems. My current focus spans Differential Evolution research, LLM-driven tooling, and backend engineering that is meant to survive real usage.",
+      "I am interested in Evolutionary Computation, Backend Engineering, and LLM Applications.",
     extendedBio:
       "My background is a mix of academic experimentation and product-minded implementation. I care about algorithmic clarity, robust system design, and interfaces that feel intentional. Outside work, I keep a long-running habit of documenting anime, visual novels, and story-heavy games, which quietly shapes how I think about structure and detail.",
     portrait: "/media/profile-photo.jpg",
@@ -119,13 +119,13 @@ export const profilesByLocale: Record<Locale, Profile> = {
   zh: {
     name: "冯晨晨",
     role: "研究方向覆盖 Evolutionary Computation、LLM 应用以及可靠后端系统实现的计算机硕士研究生。",
-    heroTitle: "面向研究与真实场景，持续构建可靠的 AI 系统。",
+    heroTitle: "你好，我是冯晨晨，\n计算机科学研二在读。",
     shortRole: "进化计算研究者 + 系统构建者",
     location: "中国，深圳",
     institution: "南方科技大学",
     email: "chenchenfengcn@gmail.com",
     description:
-      "我关注优化方法、机器智能与实际软件系统的交叉点。目前主要围绕 Differential Evolution 研究、LLM 工具链，以及能够支撑真实使用场景的后端工程展开工作。",
+      "我的研究方向包括 Evolutionary Computation、后端工程和 LLM 应用。",
     extendedBio:
       "我的背景同时包含学术探索和偏产品落地的工程实现。我重视算法逻辑的清晰性、系统设计的稳健性，以及真正具有意图的界面表达。工作之外，我长期记录动画、视觉小说和故事型游戏，这些兴趣也在潜移默化地影响我对结构和细节的理解。",
     portrait: "/media/profile-photo.jpg",

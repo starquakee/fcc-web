@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { WorkCard } from "../components/cards/WorkCard";
 import { WritingCard } from "../components/cards/WritingCard";
@@ -32,7 +33,9 @@ export function HomePage() {
       <Reveal className="hero hero--home">
         <div className="hero__copy">
           <span className="eyebrow">{text.home.eyebrow}</span>
-          <h1 className="hero__title">{profile.heroTitle}</h1>
+          <h1 className="hero__title">{profile.heroTitle.split('\n').map((line, i, arr) => (
+                    <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>
+                  ))}</h1>
           <p className="hero__lede">{profile.description}</p>
           <div className="hero__actions">
             <Link to="/projects" className="button button--primary">
