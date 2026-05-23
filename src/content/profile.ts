@@ -15,7 +15,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     extendedBio:
       "My background is a mix of academic experimentation and product-minded implementation. I care about algorithmic clarity, robust system design, and interfaces that feel intentional. Outside work, I keep a long-running habit of documenting anime, visual novels, and story-heavy games, which quietly shapes how I think about structure and detail.",
     portrait: "/media/profile-photo.jpg",
-    availability: "Since 2026.02: Backend Intern at Moonshot AI (Kimi), building search backend systems for LLMs.",
+    availability: "Since 2026.02: Agents Development Intern at Moonshot AI (Kimi), building agentic applications for LLM products.",
     seoDescription:
       "Chenchen Feng is a graduate student focused on evolutionary computation, LLM systems, and backend engineering.",
     heroStats: [
@@ -59,13 +59,13 @@ export const profilesByLocale: Record<Locale, Profile> = {
       {
         category: "experience",
         period: "2026.02 - Present",
-        title: "Backend Intern",
+        title: "Agents Development Intern",
         subtitle: "Moonshot AI (Kimi)",
         logoSrc: "/media/logos/moonshot.webp",
         logoAlt: "Moonshot AI logo",
         body: [
-          "Working on search backend systems that provide content and retrieval support for LLM products.",
-          "Focusing on backend engineering for search infrastructure used in LLM-facing workflows.",
+          "Working on agent development for LLM products, turning model capabilities into reliable user-facing workflows.",
+          "Focusing on agent orchestration, tool-use flows, and engineering support for agentic applications.",
         ],
       },
       {
@@ -129,7 +129,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     extendedBio:
       "我的背景同时包含学术探索和偏产品落地的工程实现。我重视算法逻辑的清晰性、系统设计的稳健性，以及真正具有意图的界面表达。工作之外，我长期记录动画、视觉小说和故事型游戏，这些兴趣也在潜移默化地影响我对结构和细节的理解。",
     portrait: "/media/profile-photo.jpg",
-    availability: "自 2026.02 起在月之暗面（Kimi）实习，负责为 LLM 提供内容的搜索后端系统。",
+    availability: "自 2026.02 起在月之暗面（Kimi）实习，负责 LLM 产品中的 Agents 开发。",
     seoDescription: "冯晨晨，研究方向包括 Evolutionary Computation、LLM 系统以及后端工程。",
     heroStats: [
       { label: "期刊论文", value: "2" },
@@ -157,13 +157,13 @@ export const profilesByLocale: Record<Locale, Profile> = {
       {
         category: "experience",
         period: "2026.02 - 至今",
-        title: "后端实习生",
+        title: "Agents 开发实习生",
         subtitle: "月之暗面（Kimi）",
         logoSrc: "/media/logos/moonshot.webp",
         logoAlt: "月之暗面标志",
         body: [
-          "参与为 LLM 产品提供内容与检索支撑的搜索后端系统开发。",
-          "主要聚焦服务于 LLM 场景的搜索基础设施与后端工程实现。",
+          "参与 LLM 产品中的 Agents 开发，将模型能力落地到稳定的用户工作流中。",
+          "主要聚焦 Agent 编排、工具调用流程以及智能体应用的工程化支撑。",
         ],
       },
       {
