@@ -7,7 +7,6 @@ import { MemoryPage } from "./pages/MemoryPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { PublicationsPage } from "./pages/PublicationsPage";
-import { WritingPage } from "./pages/WritingPage";
 
 export const router = createBrowserRouter(
   [
@@ -19,7 +18,6 @@ export const router = createBrowserRouter(
         { index: true, element: <HomePage /> },
         { path: "publications", element: <PublicationsPage /> },
         { path: "projects", element: <ProjectsPage /> },
-        { path: "writing", element: <WritingPage /> },
         { path: "memory", element: <MemoryPage /> },
         { path: "memory/:slug", element: <MemoryDetailPage /> },
         { path: "cv", element: <CvPage /> },

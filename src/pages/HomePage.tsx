@@ -1,14 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { WorkCard } from "../components/cards/WorkCard";
-import { WritingCard } from "../components/cards/WritingCard";
 import { Reveal } from "../components/ui/Reveal";
 import { socialLinksByLocale } from "../content/links";
 import { profilesByLocale } from "../content/profile";
 import { projectsByLocale } from "../content/projects";
 import { publicationsByLocale } from "../content/publications";
 import { siteText } from "../content/siteText";
-import { writingEntriesByLocale } from "../content/writing";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 
@@ -19,7 +17,6 @@ export function HomePage() {
   const socialLinks = socialLinksByLocale[locale];
   const publications = publicationsByLocale[locale];
   const projects = projectsByLocale[locale];
-  const writingEntries = writingEntriesByLocale[locale];
   const experienceEntries = profile.timeline.filter((entry) => entry.category === "experience");
   const educationEntries = profile.timeline.filter((entry) => entry.category === "education");
 
@@ -185,31 +182,6 @@ export function HomePage() {
               </article>
             ))}
           </section>
-        </div>
-      </Reveal>
-
-      <Reveal className="section-block" delay={200}>
-        <div className="section-heading">
-          <div>
-            <h2>{text.home.writingTitle}</h2>
-          </div>
-          <Link to="/writing" className="text-link">
-            {text.common.browseAllWriting}
-          </Link>
-        </div>
-        <div className="three-up-grid">
-          {writingEntries.map((entry) => (
-            <WritingCard
-              key={entry.slug}
-              title={entry.title}
-              date={entry.date}
-              summary={entry.summary}
-              tags={entry.tags}
-              href={entry.href}
-              cta={text.common.openDocument}
-              tagsLabel={text.common.tags}
-            />
-          ))}
         </div>
       </Reveal>
 

@@ -16,7 +16,6 @@ export function SiteShell() {
     { to: "/", label: text.nav.home, end: true },
     { to: "/publications", label: text.nav.publications },
     { to: "/projects", label: text.nav.projects },
-    { to: "/writing", label: text.nav.writing },
     { to: "/cv", label: text.nav.cv },
   ] as const;
 
