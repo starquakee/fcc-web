@@ -21,7 +21,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     heroStats: [
       { label: "Journal papers", value: "2" },
       { label: "Internships", value: "3" },
-      { label: "Anime tracked", value: "500+" },
+      { label: "GitHub Stars", value: "500+" },
     ],
     focusAreas: [
       {
@@ -134,7 +134,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     heroStats: [
       { label: "期刊论文", value: "2" },
       { label: "实习经历", value: "3" },
-      { label: "动画记录", value: "500+" },
+      { label: "GitHub Stars", value: "500+" },
     ],
     focusAreas: [
       {
