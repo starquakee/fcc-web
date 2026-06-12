@@ -199,7 +199,7 @@ export const siteText: Record<Locale, SiteText> = {
     },
     footer: {
       email: "邮箱",
-      contactCta: "有任何问题，欢迎随时来信",
+      contactCta: "欢迎随时来信",
       visits: "访问量",
       visitsPreview: "访问计数会在部署后开始记录。",
       visitsUnavailable: "访问计数暂时不可用。",
