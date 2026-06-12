@@ -20,7 +20,7 @@ export function TimelineSection({ entries, experienceLabel, educationLabel }: Ti
           {group.items.map((entry) => (
             <article key={`${entry.period}-${entry.title}`} className="timeline-row">
               <div className="timeline-row__period">{entry.period}</div>
-              <div>
+              <div className="timeline-row__media">
                 {entry.logoSrc ? (
                   <img
                     src={entry.logoSrc}

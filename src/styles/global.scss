@@ -117,7 +117,7 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 550;
+  font-weight: 600;
   color: var(--ink);
   letter-spacing: -0.02em;
 }
@@ -340,7 +340,7 @@ h3 {
 .stats-strip__value {
   display: block;
   font-family: var(--font-display);
-  font-weight: 550;
+  font-weight: 600;
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1;
   color: var(--ink);
@@ -551,7 +551,7 @@ h3 {
 
 .contact-row strong {
   font-family: var(--font-display);
-  font-weight: 550;
+  font-weight: 600;
   font-size: clamp(1.25rem, 2vw, 1.6rem);
   color: var(--ink);
 }
@@ -849,7 +849,10 @@ h3 {
   transform: none;
 }
 
-/* staggered children: the wrapper stays static, children rise in sequence */
+/* staggered children: the wrapper stays static, children rise in sequence.
+   The reveal delay rides on --stagger-delay and is attached per-property to
+   opacity/transform only, so hover transitions (background-color) on the same
+   children never inherit it. --reveal-delay/-stagger come from Reveal props. */
 .reveal--stagger {
   opacity: 1;
   transform: none;
@@ -857,11 +860,13 @@ h3 {
 }
 
 .reveal--stagger > * {
+  --stagger-delay: var(--reveal-delay, 0ms);
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out);
+    opacity var(--dur-slow) var(--ease-out) var(--stagger-delay),
+    transform var(--dur-slow) var(--ease-out) var(--stagger-delay),
+    background-color var(--dur-fast) var(--ease-inout);
 }
 
 .reveal--stagger.is-visible > * {
@@ -869,32 +874,38 @@ h3 {
   transform: translateY(0);
 }
 
-.reveal--stagger.is-visible > :nth-child(2) {
-  transition-delay: calc(1 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(2) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 1 * var(--reveal-stagger, 80ms));
 }
 
-.reveal--stagger.is-visible > :nth-child(3) {
-  transition-delay: calc(2 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(3) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 2 * var(--reveal-stagger, 80ms));
 }
 
-.reveal--stagger.is-visible > :nth-child(4) {
-  transition-delay: calc(3 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(4) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 3 * var(--reveal-stagger, 80ms));
 }
 
-.reveal--stagger.is-visible > :nth-child(5) {
-  transition-delay: calc(4 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(5) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 4 * var(--reveal-stagger, 80ms));
 }
 
-.reveal--stagger.is-visible > :nth-child(6) {
-  transition-delay: calc(5 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(6) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 5 * var(--reveal-stagger, 80ms));
 }
 
-.reveal--stagger.is-visible > :nth-child(7) {
-  transition-delay: calc(6 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(7) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 6 * var(--reveal-stagger, 80ms));
 }
 
-.reveal--stagger.is-visible > :nth-child(8) {
-  transition-delay: calc(7 * var(--reveal-stagger, 80ms));
+.reveal--stagger > :nth-child(8) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 7 * var(--reveal-stagger, 80ms));
+}
+
+/* children past the hand-written delays hold at the max so they never
+   animate before an earlier sibling */
+.reveal--stagger > :nth-child(n + 9) {
+  --stagger-delay: calc(var(--reveal-delay, 0ms) + 8 * var(--reveal-stagger, 80ms));
 }
 
 /* hero title — per-line rise on mount */
@@ -967,10 +978,9 @@ h3 {
     gap: 0.75rem;
   }
 
-  .timeline-row__period {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+  /* logoless entries: drop the empty media cell so the gap doesn't double */
+  .timeline-row__media:empty {
+    display: none;
   }
 }
 

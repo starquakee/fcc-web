@@ -48,8 +48,15 @@ export function Reveal({
   const resolvedVariant = stagger !== undefined ? "stagger" : variant;
   const variantClass = resolvedVariant === "rise" ? "" : `reveal--${resolvedVariant}`;
   const style: CSSProperties = {
-    ...(delay ? { transitionDelay: `${delay}ms` } : {}),
-    ...(stagger !== undefined ? { "--reveal-stagger": `${stagger}ms` } : {}),
+    // For stagger reveals the wrapper has `transition: none`, so the delay is
+    // handed to the children via --reveal-delay instead of transitionDelay.
+    ...(delay && resolvedVariant !== "stagger" ? { transitionDelay: `${delay}ms` } : {}),
+    ...(stagger !== undefined
+      ? {
+          "--reveal-stagger": `${stagger}ms`,
+          ...(delay ? { "--reveal-delay": `${delay}ms` } : {}),
+        }
+      : {}),
   };
 
   return createElement(
