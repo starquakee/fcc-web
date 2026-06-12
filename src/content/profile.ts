@@ -20,8 +20,9 @@ export const profilesByLocale: Record<Locale, Profile> = {
       "Chenchen Feng is a graduate student focused on evolutionary computation, LLM systems, and backend engineering.",
     heroStats: [
       { label: "Journal papers", value: "2" },
-      { label: "Internships", value: "3" },
+      { label: "Internships", value: "2" },
       { label: "GitHub Stars", value: "500+" },
+      { label: "LeetCode solved", value: "1000+" },
     ],
     focusAreas: [
       {
@@ -81,16 +82,6 @@ export const profilesByLocale: Record<Locale, Profile> = {
         ],
       },
       {
-        category: "experience",
-        period: "2022.10 - 2023.01",
-        title: "Backend Intern",
-        subtitle: "Kevin Software Information Services Co., Ltd.",
-        body: [
-          "Designed a hotel management database with extensible schema support.",
-          "Implemented backend features for registration, booking, payment, and reviews in C#.",
-        ],
-      },
-      {
         category: "education",
         period: "2024 - Present",
         title: "Master of Computer Science",
@@ -133,8 +124,9 @@ export const profilesByLocale: Record<Locale, Profile> = {
     seoDescription: "冯晨晨，研究方向包括 Evolutionary Computation、LLM 系统以及后端工程。",
     heroStats: [
       { label: "期刊论文", value: "2" },
-      { label: "实习经历", value: "3" },
+      { label: "实习经历", value: "2" },
       { label: "GitHub Stars", value: "500+" },
+      { label: "LeetCode 刷题", value: "1000+" },
     ],
     focusAreas: [
       {
@@ -176,16 +168,6 @@ export const profilesByLocale: Record<Locale, Profile> = {
         body: [
           "参与安全大模型的 post-training 相关工作。",
           "主要覆盖 SFT 与 RLHF 两类训练流程。",
-        ],
-      },
-      {
-        category: "experience",
-        period: "2022.10 - 2023.01",
-        title: "后端实习生",
-        subtitle: "凯文软件信息服务有限公司",
-        body: [
-          "设计并实现了可扩展的酒店管理数据库结构。",
-          "使用 C# 开发了注册、订房、支付与评价等后端功能。",
         ],
       },
       {
