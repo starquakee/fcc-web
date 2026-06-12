@@ -87,7 +87,7 @@ export function SiteShell() {
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
           <a href="mailto:chenchenfengcn@gmail.com" className={styles.footerEmail}>
-            chenchenfengcn@gmail.com
+            {text.footer.contactCta}
             <span className={styles.footerEmailArrow} aria-hidden="true">
               →
             </span>
