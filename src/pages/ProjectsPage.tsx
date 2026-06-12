@@ -5,6 +5,10 @@ import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 
+function formatIndex(value: number) {
+  return String(value).padStart(2, "0");
+}
+
 export function ProjectsPage() {
   const { locale } = useLanguage();
   const text = siteText[locale];
@@ -17,27 +21,27 @@ export function ProjectsPage() {
 
   return (
     <div className="page-stack">
-      <Reveal className="page-hero">
+      <Reveal as="header" className="page-header">
+        <span className="eyebrow">{text.projects.eyebrow}</span>
         <h1>{text.projects.title}</h1>
-        <p>{text.projects.body}</p>
+        <p className="page-header__lede">{text.projects.body}</p>
       </Reveal>
 
-      <Reveal className="section-block" delay={80}>
-        <div className="bento-grid">
-          {projects.map((project) => (
-            <WorkCard
-              key={project.slug}
-              eyebrow={text.common.project}
-              title={project.title}
-              subtitle={project.subtitle}
-              summary={`${project.summary} ${project.impact}`}
-              tags={project.stack}
-              meta={text.common.implementation}
-              tagsLabel={text.common.tags}
-              links={project.links}
-            />
-          ))}
-        </div>
+      <Reveal stagger={90} className="work-index">
+        {projects.map((project, i) => (
+          <WorkCard
+            key={project.slug}
+            index={formatIndex(i + 1)}
+            eyebrow={text.common.project}
+            title={project.title}
+            subtitle={project.subtitle}
+            summary={`${project.summary} ${project.impact}`}
+            tags={project.stack}
+            meta={text.common.implementation}
+            tagsLabel={text.common.tags}
+            links={project.links}
+          />
+        ))}
       </Reveal>
     </div>
   );

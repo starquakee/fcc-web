@@ -1,13 +1,23 @@
-import { useEffect, useRef, useState } from "react";
-import type { PropsWithChildren } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
+import type { CSSProperties, PropsWithChildren } from "react";
 
 type RevealProps = PropsWithChildren<{
   className?: string;
   delay?: number;
+  variant?: "rise" | "fade" | "stagger";
+  stagger?: number;
+  as?: "div" | "section" | "article" | "header" | "footer" | "ul" | "ol";
 }>;
 
-export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  variant = "rise",
+  stagger,
+  as = "div",
+}: RevealProps) {
+  const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -24,7 +34,10 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 },
+      // threshold 0 + small bottom inset: fires as soon as the element's top
+      // enters the viewport, regardless of element height (a ratio threshold
+      // never fires for elements much taller than the viewport).
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" },
     );
 
     observer.observe(node);
@@ -32,13 +45,22 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <div
-      ref={ref}
-      className={`reveal ${visible ? "is-visible" : ""} ${className}`.trim()}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
+  const resolvedVariant = stagger !== undefined ? "stagger" : variant;
+  const variantClass = resolvedVariant === "rise" ? "" : `reveal--${resolvedVariant}`;
+  const style: CSSProperties = {
+    ...(delay ? { transitionDelay: `${delay}ms` } : {}),
+    ...(stagger !== undefined ? { "--reveal-stagger": `${stagger}ms` } : {}),
+  };
+
+  return createElement(
+    as,
+    {
+      ref,
+      className: `reveal ${variantClass} ${visible ? "is-visible" : ""} ${className}`
+        .replace(/\s+/g, " ")
+        .trim(),
+      style,
+    },
+    children,
   );
 }

@@ -6,6 +6,10 @@ import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 
+function formatIndex(value: number) {
+  return String(value).padStart(2, "0");
+}
+
 export function PublicationsPage() {
   const { locale } = useLanguage();
   const text = siteText[locale];
@@ -19,39 +23,39 @@ export function PublicationsPage() {
 
   return (
     <div className="page-stack">
-      <Reveal className="page-hero">
+      <Reveal as="header" className="page-header">
+        <span className="eyebrow">{text.publications.eyebrow}</span>
         <h1>{text.publications.title}</h1>
-        <p>{text.publications.body}</p>
+        <p className="page-header__lede">{text.publications.body}</p>
       </Reveal>
 
-      <Reveal className="section-block" delay={80}>
-        <div className="bento-grid">
-          {publications.map((publication) => (
-            <WorkCard
-              key={publication.slug}
-              eyebrow={text.common.journal}
-              title={publication.title}
-              subtitle={publication.venue}
-              summary={publication.abstract}
-              tags={publication.tags}
-              meta={publication.year}
-              tagsLabel={text.common.tags}
-              links={[
-                { label: text.common.readPaper, href: publication.pdfUrl },
-                ...(publication.codeUrl ? [{ label: text.common.viewCode, href: publication.codeUrl }] : []),
-              ]}
-            />
-          ))}
-        </div>
+      <Reveal stagger={90} className="work-index">
+        {publications.map((publication, i) => (
+          <WorkCard
+            key={publication.slug}
+            index={formatIndex(i + 1)}
+            eyebrow={text.common.journal}
+            title={publication.title}
+            subtitle={publication.venue}
+            summary={publication.abstract}
+            tags={publication.tags}
+            meta={publication.year}
+            tagsLabel={text.common.tags}
+            links={[
+              { label: text.common.readPaper, href: publication.pdfUrl },
+              ...(publication.codeUrl ? [{ label: text.common.viewCode, href: publication.codeUrl }] : []),
+            ]}
+          />
+        ))}
       </Reveal>
 
-      <Reveal className="section-block note-grid" delay={120}>
-        <article className="note-card">
+      <Reveal className="note-duo">
+        <article>
           <span className="eyebrow">{text.common.currentPositioning}</span>
           <h2>{profile.shortRole}</h2>
           <p>{profile.extendedBio}</p>
         </article>
-        <article className="note-card">
+        <article>
           <span className="eyebrow">{text.common.researchIdentity}</span>
           <h2>{text.publications.noteTitle}</h2>
           <p>{text.publications.noteHeading}</p>

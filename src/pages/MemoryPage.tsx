@@ -17,53 +17,41 @@ export function MemoryPage() {
     locale === "zh" ? "一些更私人一些的文化小记、兴趣记录与长期参照。" : "A quieter set of notes on culture, media, and long-term personal references.",
   );
 
+  const renderEntryBody = (entry: (typeof memoryEntries)[number], linked: boolean) => (
+    <article className="memory-entry">
+      <div className="memory-entry__frame">
+        <img src={entry.image} alt={entry.title} />
+      </div>
+      <div className="memory-entry__body">
+        <div className="memory-entry__meta">
+          <span>{entry.year}</span>
+          <span>{entry.tags.join(" · ")}</span>
+        </div>
+        <h2>{entry.title}</h2>
+        <p>{entry.summary}</p>
+        <p>{entry.reflection}</p>
+        {linked ? <span className="arrow-link">{text.memory.readMore}</span> : null}
+      </div>
+    </article>
+  );
+
   return (
     <div className="page-stack">
-      <Reveal className="page-hero page-hero--memory">
+      <Reveal as="header" className="page-header">
+        <span className="eyebrow">{text.memory.eyebrow}</span>
         <h1>{text.memory.title}</h1>
       </Reveal>
 
-      <Reveal className="memory-grid" delay={80}>
-        {memoryEntries.map((entry) => (
+      <Reveal stagger={110} className="memory-list">
+        {memoryEntries.map((entry) =>
           detailSlugs.has(entry.slug) ? (
-            <Link key={entry.slug} to={`/memory/${entry.slug}`} className="memory-card-link">
-              <article className="memory-card">
-                <img src={entry.image} alt={entry.title} className="memory-card__image" />
-                <div className="memory-card__body">
-                  <div className="memory-card__meta">
-                    <span>{entry.year}</span>
-                    <div className="memory-card__tags">
-                      {entry.tags.map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <h2>{entry.title}</h2>
-                  <p>{entry.summary}</p>
-                  <p>{entry.reflection}</p>
-                  <span className="memory-card__cta">{text.memory.readMore}</span>
-                </div>
-              </article>
+            <Link key={entry.slug} to={`/memory/${entry.slug}`} className="memory-link">
+              {renderEntryBody(entry, true)}
             </Link>
           ) : (
-            <article key={entry.slug} className="memory-card">
-              <img src={entry.image} alt={entry.title} className="memory-card__image" />
-              <div className="memory-card__body">
-                <div className="memory-card__meta">
-                  <span>{entry.year}</span>
-                  <div className="memory-card__tags">
-                    {entry.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-                </div>
-                <h2>{entry.title}</h2>
-                <p>{entry.summary}</p>
-                <p>{entry.reflection}</p>
-              </div>
-            </article>
-          )
-        ))}
+            <div key={entry.slug}>{renderEntryBody(entry, false)}</div>
+          ),
+        )}
       </Reveal>
     </div>
   );

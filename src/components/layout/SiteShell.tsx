@@ -17,20 +17,22 @@ export function SiteShell() {
     { to: "/publications", label: text.nav.publications },
     { to: "/projects", label: text.nav.projects },
     { to: "/cv", label: text.nav.cv },
+    { to: "/memory", label: text.nav.memory },
   ] as const;
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
   }, [location.pathname]);
 
   const visitCountText =
     count !== null
-      ? `${text.footer.visits}: ${new Intl.NumberFormat(locale === "zh" ? "zh-CN" : "en-US").format(count)}`
+      ? `${text.footer.visits} — ${new Intl.NumberFormat(locale === "zh" ? "zh-CN" : "en-US").format(count)}`
       : isLocalPreview
         ? text.footer.visitsPreview
         : hasError
           ? text.footer.visitsUnavailable
-          : `${text.footer.visits}: ...`;
+          : `${text.footer.visits} — ...`;
 
   return (
     <div className={styles.shell}>
@@ -40,7 +42,7 @@ export function SiteShell() {
       <div className={styles.headerWrap}>
         <header className={styles.header}>
           <Link to="/" className={styles.brand} aria-label={text.nav.home}>
-            <span className={styles.brandTitle}>{profile.name}</span>
+            {profile.name}
           </Link>
           <div className={styles.headerActions}>
             <nav className={styles.nav} aria-label="Primary">
@@ -56,14 +58,6 @@ export function SiteShell() {
                   {link.label}
                 </NavLink>
               ))}
-              <NavLink
-                to="/memory"
-                className={({ isActive }) =>
-                  `${styles.navLink} ${styles.memoryLink} ${isActive ? styles.navLinkActive : ""}`.trim()
-                }
-              >
-                {text.nav.memory}
-              </NavLink>
             </nav>
             <div className={styles.localeSwitch} role="group" aria-label={text.languageSwitchLabel}>
               <button
@@ -73,6 +67,9 @@ export function SiteShell() {
               >
                 EN
               </button>
+              <span className={styles.localeDivider} aria-hidden="true">
+                /
+              </span>
               <button
                 type="button"
                 className={`${styles.localeButton} ${locale === "zh" ? styles.localeButtonActive : ""}`.trim()}
@@ -88,20 +85,30 @@ export function SiteShell() {
         <Outlet />
       </main>
       <footer className={styles.footer}>
-        <div className={styles.footerCounter} aria-live="polite">
-          {visitCountText}
-        </div>
-        <div className={styles.footerLinks}>
-          <a href="mailto:chenchenfengcn@gmail.com">{text.footer.email}</a>
-          <a href="https://github.com/starquakee" target="_blank" rel="noreferrer">
-            GitHub
+        <div className={styles.footerInner}>
+          <a href="mailto:chenchenfengcn@gmail.com" className={styles.footerEmail}>
+            chenchenfengcn@gmail.com
+            <span className={styles.footerEmailArrow} aria-hidden="true">
+              →
+            </span>
           </a>
-          <a href="https://orcid.org/0009-0000-1072-8183" target="_blank" rel="noreferrer">
-            ORCID
-          </a>
-          <a href="https://bangumi.tv/user/846860" target="_blank" rel="noreferrer">
-            Bangumi
-          </a>
+          <div className={styles.footerRow}>
+            <div className={styles.footerLinks}>
+              <a href="mailto:chenchenfengcn@gmail.com">{text.footer.email}</a>
+              <a href="https://github.com/starquakee" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a href="https://orcid.org/0009-0000-1072-8183" target="_blank" rel="noreferrer">
+                ORCID
+              </a>
+              <a href="https://bangumi.tv/user/846860" target="_blank" rel="noreferrer">
+                Bangumi
+              </a>
+            </div>
+            <div className={styles.footerCounter} aria-live="polite">
+              {visitCountText}
+            </div>
+          </div>
         </div>
       </footer>
     </div>

@@ -1,7 +1,8 @@
-import React from "react";
+import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { WorkCard } from "../components/cards/WorkCard";
 import { Reveal } from "../components/ui/Reveal";
+import { TimelineSection } from "../components/ui/TimelineSection";
 import { socialLinksByLocale } from "../content/links";
 import { profilesByLocale } from "../content/profile";
 import { projectsByLocale } from "../content/projects";
@@ -10,6 +11,10 @@ import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 
+function formatIndex(value: number) {
+  return String(value).padStart(2, "0");
+}
+
 export function HomePage() {
   const { locale } = useLanguage();
   const text = siteText[locale];
@@ -17,66 +22,91 @@ export function HomePage() {
   const socialLinks = socialLinksByLocale[locale];
   const publications = publicationsByLocale[locale];
   const projects = projectsByLocale[locale];
-  const experienceEntries = profile.timeline.filter((entry) => entry.category === "experience");
-  const educationEntries = profile.timeline.filter((entry) => entry.category === "education");
+  const selectedProjects = projects.slice(0, 2);
 
-  useDocumentMeta(
-    locale === "zh" ? "冯晨晨" : "Chenchen Feng",
-    profile.seoDescription,
-  );
+  useDocumentMeta(locale === "zh" ? "冯晨晨" : "Chenchen Feng", profile.seoDescription);
+
+  const heroFacts = [
+    {
+      label: locale === "zh" ? "所属机构" : "Institution",
+      value: profile.institution,
+    },
+    {
+      label: locale === "zh" ? "当前状态" : "Currently",
+      value: profile.availability,
+    },
+    {
+      label: locale === "zh" ? "联系方式" : "Contact",
+      value: profile.email,
+    },
+  ];
 
   return (
     <div className="page-stack">
-      <Reveal className="hero hero--home">
-        <div className="hero__copy">
+      <header className="hero">
+        <Reveal variant="fade" className="hero__topline">
           <span className="eyebrow">{text.home.eyebrow}</span>
-          <h1 className="hero__title">{profile.heroTitle.split('\n').map((line, i, arr) => (
-                    <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>
-                  ))}</h1>
-          <p className="hero__lede">{profile.description}</p>
-          <div className="hero__actions">
-            <Link to="/projects" className="button button--primary">
-              {text.home.ctaPrimary}
-            </Link>
-            <Link to="/cv" className="button button--ghost">
-              {text.home.ctaSecondary}
-            </Link>
+          <span className="mono-label">{profile.location}</span>
+        </Reveal>
+        <h1 className="hero__title">
+          {profile.heroTitle.split("\n").map((line, i) => (
+            <span key={i} className="line-mask">
+              <span className="line" style={{ "--line-i": i } as CSSProperties}>
+                {line}
+              </span>
+            </span>
+          ))}
+        </h1>
+        <Reveal delay={250} className="hero__grid">
+          <div>
+            <p className="hero__lede">{profile.description}</p>
+            <div className="hero__actions">
+              <Link to="/projects" className="button button--primary">
+                {text.home.ctaPrimary}
+              </Link>
+              <Link to="/cv" className="button button--ghost">
+                {text.home.ctaSecondary}
+              </Link>
+            </div>
           </div>
-          <div className="hero__meta">
-            <span>{profile.location}</span>
-            <span>{profile.institution}</span>
-            <span>{profile.availability}</span>
-          </div>
-        </div>
-        <div className="hero__aside">
-          <div className="portrait-panel">
+          <dl className="hero-facts">
+            {heroFacts.map((fact) => (
+              <div key={fact.label} className="hero-facts__row">
+                <dt className="mono-label">{fact.label}</dt>
+                <dd className="hero-facts__value">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <figure className="hero__portrait">
             <img
               src={profile.portrait}
               alt={locale === "zh" ? "冯晨晨头像" : "Portrait of Chenchen Feng"}
-              className="portrait-panel__image"
             />
-          </div>
-          <div className="stat-grid">
-            {profile.heroStats.map((item) => (
-              <div key={item.label} className="stat-card">
-                <span className="stat-card__value">{item.value}</span>
-                <span className="stat-card__label">{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Reveal>
+          </figure>
+        </Reveal>
+        <Reveal delay={400} stagger={90} className="stats-strip">
+          {profile.heroStats.map((item) => (
+            <div key={item.label} className="stats-strip__cell">
+              <span className="stats-strip__value">{item.value}</span>
+              <span className="stats-strip__label">{item.label}</span>
+            </div>
+          ))}
+        </Reveal>
+      </header>
 
-      <Reveal className="section-block" delay={80}>
-        <div className="section-heading">
-          <div>
-            <h2>{text.home.selectedWorkTitle}</h2>
-          </div>
-        </div>
-        <div className="bento-grid">
-          {publications.map((publication) => (
+      <section>
+        <Reveal className="section-header">
+          <span className="section-header__index">01</span>
+          <h2 className="section-header__title">{text.home.selectedWorkTitle}</h2>
+          <span className="section-header__meta">
+            {formatIndex(publications.length + selectedProjects.length)}
+          </span>
+        </Reveal>
+        <Reveal stagger={90} className="work-index">
+          {publications.map((publication, i) => (
             <WorkCard
               key={publication.slug}
+              index={formatIndex(i + 1)}
               eyebrow={text.common.publication}
               title={publication.title}
               subtitle={publication.venue}
@@ -90,9 +120,10 @@ export function HomePage() {
               ]}
             />
           ))}
-          {projects.slice(0, 2).map((project) => (
+          {selectedProjects.map((project, i) => (
             <WorkCard
               key={project.slug}
+              index={formatIndex(publications.length + i + 1)}
               eyebrow={text.common.project}
               title={project.title}
               subtitle={project.subtitle}
@@ -103,18 +134,17 @@ export function HomePage() {
               links={project.links}
             />
           ))}
-        </div>
-      </Reveal>
+        </Reveal>
+      </section>
 
-      <Reveal className="section-block" delay={120}>
-        <div className="section-heading">
-          <div>
-            <h2>{text.home.focusTitle}</h2>
-          </div>
-        </div>
-        <div className="focus-grid">
+      <section>
+        <Reveal className="section-header">
+          <span className="section-header__index">02</span>
+          <h2 className="section-header__title">{text.home.focusTitle}</h2>
+        </Reveal>
+        <Reveal stagger={110} className="focus-grid">
           {profile.focusAreas.map((area) => (
-            <article key={area.title} className="focus-card">
+            <article key={area.title} className="focus-col">
               <h3>{area.title}</h3>
               <p>{area.description}</p>
               <ul>
@@ -124,82 +154,40 @@ export function HomePage() {
               </ul>
             </article>
           ))}
-        </div>
-      </Reveal>
+        </Reveal>
+      </section>
 
-      <Reveal className="section-block" delay={160}>
-        <div className="section-heading">
-          <div>
-            <h2>{text.home.timelineTitle}</h2>
-          </div>
-        </div>
-        <div className="timeline">
-          <section className="timeline-group">
-            <div className="timeline-group__title">{text.common.experience}</div>
-            {experienceEntries.map((entry) => (
-              <article key={`${entry.period}-${entry.title}`} className="timeline-card">
-                <div className="timeline-card__period">
-                  <span>{entry.period}</span>
-                  {entry.logoSrc ? (
-                    <img
-                      src={entry.logoSrc}
-                      alt={entry.logoAlt ?? entry.subtitle}
-                      className="timeline-card__logo"
-                    />
-                  ) : null}
-                </div>
-                <div className="timeline-card__body">
-                  <h3>{entry.title}</h3>
-                  <p className="timeline-card__subtitle">{entry.subtitle}</p>
-                  {entry.body.map((line) => (
-                    <p key={line}>{line}</p>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </section>
-          <section className="timeline-group">
-            <div className="timeline-group__title">{text.common.education}</div>
-            {educationEntries.map((entry) => (
-              <article key={`${entry.period}-${entry.title}`} className="timeline-card">
-                <div className="timeline-card__period">
-                  <span>{entry.period}</span>
-                  {entry.logoSrc ? (
-                    <img
-                      src={entry.logoSrc}
-                      alt={entry.logoAlt ?? entry.subtitle}
-                      className="timeline-card__logo"
-                    />
-                  ) : null}
-                </div>
-                <div className="timeline-card__body">
-                  <h3>{entry.title}</h3>
-                  <p className="timeline-card__subtitle">{entry.subtitle}</p>
-                  {entry.body.map((line) => (
-                    <p key={line}>{line}</p>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </section>
-        </div>
-      </Reveal>
+      <section>
+        <Reveal className="section-header">
+          <span className="section-header__index">03</span>
+          <h2 className="section-header__title">{text.home.timelineTitle}</h2>
+        </Reveal>
+        <Reveal>
+          <TimelineSection
+            entries={profile.timeline}
+            experienceLabel={text.common.experience}
+            educationLabel={text.common.education}
+          />
+        </Reveal>
+      </section>
 
-      <Reveal className="section-block contact-panel" delay={240}>
-        <div className="section-heading">
-          <div>
-            <h2>{text.home.contactTitle}</h2>
-          </div>
-        </div>
-        <div className="contact-grid">
+      <section>
+        <Reveal className="section-header">
+          <span className="section-header__index">04</span>
+          <h2 className="section-header__title">{text.home.contactTitle}</h2>
+        </Reveal>
+        <Reveal stagger={90} className="contact-list">
           {socialLinks.map((link) => (
-            <a key={link.label} href={link.href} className="contact-card" target="_blank" rel="noreferrer">
+            <a key={link.label} href={link.href} className="contact-row" target="_blank" rel="noreferrer">
               <strong>{link.label}</strong>
               <span>{link.note}</span>
+              <span className="contact-row__arrow" aria-hidden="true">
+                →
+              </span>
             </a>
           ))}
-        </div>
-      </Reveal>
+        </Reveal>
+      </section>
     </div>
   );
 }

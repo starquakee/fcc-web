@@ -158,26 +158,23 @@ export function MemoryDetailPage() {
 
   return (
     <div className="page-stack">
-      <Reveal className="page-hero page-hero--memory">
-        <Link to="/memory" className="text-link detail-back-link">
+      <Reveal as="header" className="page-header">
+        <Link to="/memory" className="arrow-link arrow-link--back">
           {text.memory.backToList}
         </Link>
         <div className="note-detail__hero">
           <div className="note-detail__copy">
-            <span className="eyebrow">{detail.year}</span>
+            <span className="eyebrow">
+              {detail.year} · {detail.tags.join(" · ")}
+            </span>
             <h1>{detail.title}</h1>
             <p>{detail.summary}</p>
-            <div className="memory-card__tags">
-              {detail.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
           </div>
           <img src={detail.image} alt={detail.title} className="note-detail__hero-image" />
         </div>
       </Reveal>
 
-      <Reveal className="section-block" delay={80}>
+      <Reveal delay={120}>
         <article className="note-article">
           {content ? renderNoteMarkdown(content) : null}
           {!content && !loadError ? (

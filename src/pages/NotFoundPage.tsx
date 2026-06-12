@@ -13,11 +13,11 @@ export function NotFoundPage() {
   );
 
   return (
-    <section className="page-hero page-hero--compact">
-      <span className="eyebrow">404</span>
-      <h1>{text.notFound.title}</h1>
-      <p>{text.notFound.body}</p>
-      <div className="hero__actions">
+    <section className="page-stack">
+      <div className="notfound">
+        <span className="eyebrow">404</span>
+        <h1 className="notfound__title">{text.notFound.title}</h1>
+        <p className="notfound__body">{text.notFound.body}</p>
         <Link to="/" className="button button--primary">
           {text.notFound.cta}
         </Link>
