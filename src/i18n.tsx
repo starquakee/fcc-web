@@ -12,13 +12,31 @@ const STORAGE_KEY = "fcc-web-locale";
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
+function readStoredLocale(): Locale | null {
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+
+    return stored === "en" || stored === "zh" ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredLocale(locale: Locale) {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, locale);
+  } catch {
+    // Storage can be unavailable in private browsing or strict privacy modes.
+  }
+}
+
 function detectInitialLocale(): Locale {
   if (typeof window === "undefined") {
     return "en";
   }
 
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  if (stored === "en" || stored === "zh") {
+  const stored = readStoredLocale();
+  if (stored) {
     return stored;
   }
 
@@ -29,7 +47,7 @@ export function LanguageProvider({ children }: PropsWithChildren) {
   const [locale, setLocale] = useState<Locale>(detectInitialLocale);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, locale);
+    writeStoredLocale(locale);
     document.documentElement.lang = locale;
   }, [locale]);
 

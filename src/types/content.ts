@@ -60,15 +60,6 @@ export type Project = {
   links: Array<{ label: string; href: string }>;
 };
 
-export type WritingEntry = {
-  slug: string;
-  title: string;
-  date: string;
-  summary: string;
-  tags: string[];
-  href: string;
-};
-
 export type MemoryEntry = {
   slug: string;
   title: string;

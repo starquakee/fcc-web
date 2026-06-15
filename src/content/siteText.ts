@@ -8,7 +8,6 @@ type SiteText = {
     home: string;
     publications: string;
     projects: string;
-    writing: string;
     cv: string;
     memory: string;
   };
@@ -29,7 +28,6 @@ type SiteText = {
     readPaper: string;
     code: string;
     viewCode: string;
-    browseAllWriting: string;
     openDocument: string;
     openPdf: string;
     experience: string;
@@ -49,8 +47,6 @@ type SiteText = {
     focusBody: string;
     timelineTitle: string;
     timelineBody: string;
-    writingTitle: string;
-    writingBody: string;
     contactTitle: string;
     contactBody: string;
   };
@@ -63,11 +59,6 @@ type SiteText = {
     noteBody: string;
   };
   projects: {
-    eyebrow: string;
-    title: string;
-    body: string;
-  };
-  writing: {
     eyebrow: string;
     title: string;
     body: string;
@@ -99,7 +90,6 @@ export const siteText: Record<Locale, SiteText> = {
       home: "Home",
       publications: "Publications",
       projects: "Projects",
-      writing: "Writing",
       cv: "CV",
       memory: "Notes",
     },
@@ -120,7 +110,6 @@ export const siteText: Record<Locale, SiteText> = {
       readPaper: "Read paper",
       code: "Code",
       viewCode: "View code",
-      browseAllWriting: "Browse all writing",
       openDocument: "Open document",
       openPdf: "Open PDF",
       experience: "Experience",
@@ -141,8 +130,6 @@ export const siteText: Record<Locale, SiteText> = {
       focusBody: "Research Focus",
       timelineTitle: "Education and Experience",
       timelineBody: "Timeline",
-      writingTitle: "Writing",
-      writingBody: "Writing Preview",
       contactTitle: "Contact",
       contactBody: "Contact",
     },
@@ -161,12 +148,6 @@ export const siteText: Record<Locale, SiteText> = {
       title: "Projects",
       body:
         "These projects sit across AI tooling, optimization, full-stack workflow software, and networking fundamentals.",
-    },
-    writing: {
-      eyebrow: "Writing",
-      title: "Writing",
-      body:
-        "Most of these pieces come from concrete problem-solving: routing heuristics, mathematical modeling, and implementation-focused reports.",
     },
     memory: {
       eyebrow: "Notes",
@@ -193,7 +174,6 @@ export const siteText: Record<Locale, SiteText> = {
       home: "首页",
       publications: "论文",
       projects: "项目",
-      writing: "文章",
       cv: "简历",
       memory: "小记",
     },
@@ -214,7 +194,6 @@ export const siteText: Record<Locale, SiteText> = {
       readPaper: "查看论文",
       code: "代码",
       viewCode: "查看代码",
-      browseAllWriting: "查看全部文章",
       openDocument: "打开文档",
       openPdf: "打开 PDF",
       experience: "实习与经历",
@@ -234,8 +213,6 @@ export const siteText: Record<Locale, SiteText> = {
       focusBody: "研究兴趣",
       timelineTitle: "教育背景与经历",
       timelineBody: "时间线",
-      writingTitle: "文章",
-      writingBody: "文章预览",
       contactTitle: "联系方式",
       contactBody: "联系我",
     },
@@ -251,11 +228,6 @@ export const siteText: Record<Locale, SiteText> = {
       eyebrow: "项目",
       title: "项目",
       body: "这些项目覆盖 AI 工具、优化方法、全栈业务系统以及网络基础实现。",
-    },
-    writing: {
-      eyebrow: "文章",
-      title: "文章",
-      body: "这些内容大多来自具体问题求解过程，比如路径规划启发式、数学建模以及实现导向的项目报告。",
     },
     memory: {
       eyebrow: "小记",
