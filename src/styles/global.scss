@@ -752,6 +752,10 @@ h3 {
   margin-top: var(--space-3);
 }
 
+.note-detail__hero--text-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .note-detail__copy {
   display: grid;
   gap: var(--space-2);

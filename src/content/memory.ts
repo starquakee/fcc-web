@@ -4,6 +4,17 @@ import type { MemoryEntry } from "../types/content";
 export const memoryEntriesByLocale: Record<Locale, MemoryEntry[]> = {
   en: [
     {
+      slug: "harness-engineering",
+      title: "From the Agent Formula to Harness Engineering",
+      year: "2026",
+      summary:
+        "A note on the engineering layer that makes agents reliable: loops, context, state, tools, permissions, evaluation, and self-improvement.",
+      reflection:
+        "The useful shift here is from asking whether the model is smart enough to asking whether the surrounding system can let it recover, stay bounded, learn from failure, and keep working over time.",
+      image: "/media/logos/moonshot.webp",
+      tags: ["Agents", "AI Systems", "Engineering"],
+    },
+    {
       slug: "hentai-prison-note",
       title: "A note on Hentai Prison",
       year: "2025",
@@ -16,6 +27,16 @@ export const memoryEntriesByLocale: Record<Locale, MemoryEntry[]> = {
     },
   ],
   zh: [
+    {
+      slug: "harness-engineering",
+      title: "从 Agent 公式到 Harness 工程",
+      year: "2026",
+      summary: "一篇关于 Agent 工程化外壳的整理：运行循环、上下文、状态、工具权限、评估体系和自我改进。",
+      reflection:
+        "这里真正有用的转向，是从“模型够不够聪明”转向“外层系统能不能让它恢复、受控、从失败中学习，并且长期工作”。",
+      image: "/media/logos/moonshot.webp",
+      tags: ["Agent", "AI 系统", "工程化"],
+    },
     {
       slug: "hentai-prison-note",
       title: "关于《Hentai Prison》的一则记录",

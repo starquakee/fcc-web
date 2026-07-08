@@ -162,7 +162,7 @@ export function MemoryDetailPage() {
         <Link to="/memory" className="arrow-link arrow-link--back">
           {text.memory.backToList}
         </Link>
-        <div className="note-detail__hero">
+        <div className={detail.image ? "note-detail__hero" : "note-detail__hero note-detail__hero--text-only"}>
           <div className="note-detail__copy">
             <span className="eyebrow">
               {detail.year} · {detail.tags.join(" · ")}
@@ -170,7 +170,7 @@ export function MemoryDetailPage() {
             <h1>{detail.title}</h1>
             <p>{detail.summary}</p>
           </div>
-          <img src={detail.image} alt={detail.title} className="note-detail__hero-image" />
+          {detail.image ? <img src={detail.image} alt={detail.title} className="note-detail__hero-image" /> : null}
         </div>
       </Reveal>
 

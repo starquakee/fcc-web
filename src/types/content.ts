@@ -75,7 +75,7 @@ export type MemoryDetail = {
   title: string;
   year: string;
   summary: string;
-  image: string;
+  image?: string;
   tags: string[];
   contentPath: string;
 };

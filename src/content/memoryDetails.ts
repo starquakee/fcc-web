@@ -4,6 +4,15 @@ import type { MemoryDetail } from "../types/content";
 export const memoryDetailsByLocale: Record<Locale, MemoryDetail[]> = {
   en: [
     {
+      slug: "harness-engineering",
+      title: "From the Agent Formula to Harness Engineering",
+      year: "2026",
+      summary:
+        "A note on the engineering layer that makes agents reliable: loops, context, state, tools, permissions, evaluation, and self-improvement.",
+      tags: ["Agents", "AI Systems", "Engineering"],
+      contentPath: "/notes/harness-engineering-en.md",
+    },
+    {
       slug: "hentai-prison-note",
       title: "A note on Hentai Prison",
       year: "2025",
@@ -15,6 +24,14 @@ export const memoryDetailsByLocale: Record<Locale, MemoryDetail[]> = {
     },
   ],
   zh: [
+    {
+      slug: "harness-engineering",
+      title: "从 Agent 公式到 Harness 工程",
+      year: "2026",
+      summary: "一篇关于 Agent 工程化外壳的整理：运行循环、上下文、状态、工具权限、评估体系和自我改进。",
+      tags: ["Agent", "AI 系统", "工程化"],
+      contentPath: "/notes/harness-engineering-zh.md",
+    },
     {
       slug: "hentai-prison-note",
       title: "关于《Hentai Prison》的一则记录",
