@@ -4,6 +4,15 @@ import type { MemoryDetail } from "../types/content";
 export const memoryDetailsByLocale: Record<Locale, MemoryDetail[]> = {
   en: [
     {
+      slug: "istratde-alphaevolve",
+      title: "Diversity as Compute: From iStratDE to AlphaEvolve",
+      year: "2026",
+      summary:
+        "A research note on the shared search philosophy behind iStratDE, AlphaEvolve, Quality Diversity, and possible LLM agent systems.",
+      tags: ["LLM Agents", "iStratDE", "Quality Diversity"],
+      contentPath: "/notes/istratde-alphaevolve-en.md",
+    },
+    {
       slug: "harness-engineering",
       title: "From the Agent Formula to Harness Engineering",
       year: "2026",
@@ -25,10 +34,18 @@ export const memoryDetailsByLocale: Record<Locale, MemoryDetail[]> = {
   ],
   zh: [
     {
+      slug: "istratde-alphaevolve",
+      title: "把多样性当成算力：从 iStratDE 到 AlphaEvolve",
+      year: "2026",
+      summary: "我把 iStratDE 和 AlphaEvolve 放在一起看，想弄清楚多样性为什么可能是一种算力。",
+      tags: ["LLM Agent", "iStratDE", "Quality Diversity"],
+      contentPath: "/notes/istratde-alphaevolve-zh.md",
+    },
+    {
       slug: "harness-engineering",
       title: "从 Agent 公式到 Harness 工程",
       year: "2026",
-      summary: "一篇关于 Agent 工程化外壳的整理：运行循环、上下文、状态、工具权限、评估体系和自我改进。",
+      summary: "整理一下 Agent 外层运行系统到底要管什么，包括循环、上下文、状态、权限和评估。",
       tags: ["Agent", "AI 系统", "工程化"],
       contentPath: "/notes/harness-engineering-zh.md",
     },

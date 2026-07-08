@@ -4,6 +4,17 @@ import type { MemoryEntry } from "../types/content";
 export const memoryEntriesByLocale: Record<Locale, MemoryEntry[]> = {
   en: [
     {
+      slug: "istratde-alphaevolve",
+      title: "Diversity as Compute: From iStratDE to AlphaEvolve",
+      year: "2026",
+      summary:
+        "A research note on the shared search philosophy behind iStratDE, AlphaEvolve, Quality Diversity, and possible LLM agent systems.",
+      reflection:
+        "The interesting thread is not that both systems use evolution, but that both treat structured diversity as a source of capability. That idea feels portable beyond DE and algorithm discovery.",
+      image: "/media/memory-istratde-alphaevolve.png",
+      tags: ["LLM Agents", "iStratDE", "Quality Diversity"],
+    },
+    {
       slug: "harness-engineering",
       title: "From the Agent Formula to Harness Engineering",
       year: "2026",
@@ -28,12 +39,22 @@ export const memoryEntriesByLocale: Record<Locale, MemoryEntry[]> = {
   ],
   zh: [
     {
+      slug: "istratde-alphaevolve",
+      title: "把多样性当成算力：从 iStratDE 到 AlphaEvolve",
+      year: "2026",
+      summary: "我把 iStratDE 和 AlphaEvolve 放在一起看，想弄清楚多样性为什么可能是一种算力。",
+      reflection:
+        "让我在意的不是它们都用了演化，而是它们都没有急着把搜索压成单一路径。这个想法也许能迁移到 LLM Agent。",
+      image: "/media/memory-istratde-alphaevolve.png",
+      tags: ["LLM Agent", "iStratDE", "Quality Diversity"],
+    },
+    {
       slug: "harness-engineering",
       title: "从 Agent 公式到 Harness 工程",
       year: "2026",
-      summary: "一篇关于 Agent 工程化外壳的整理：运行循环、上下文、状态、工具权限、评估体系和自我改进。",
+      summary: "整理一下 Agent 外层运行系统到底要管什么，包括循环、上下文、状态、权限和评估。",
       reflection:
-        "这里真正有用的转向，是从“模型够不够聪明”转向“外层系统能不能让它恢复、受控、从失败中学习，并且长期工作”。",
+        "我越来越觉得，问题不只是模型够不够聪明。更麻烦的是外层系统能不能让它恢复、受控，并且别在长任务里迷路。",
       image: "/media/logos/moonshot.webp",
       tags: ["Agent", "AI 系统", "工程化"],
     },
