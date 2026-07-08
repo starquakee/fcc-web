@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Reveal } from "../components/ui/Reveal";
@@ -6,92 +5,31 @@ import { memoryDetailsByLocale } from "../content/memoryDetails";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
+import { parseNoteMarkdown } from "../lib/noteMarkdown";
+import type { NoteInlineSegment, NoteMarkdownBlock } from "../lib/noteMarkdown";
 import { NotFoundPage } from "./NotFoundPage";
 
-function resolveNoteImage(path: string) {
-  const filename = path.split("/").pop();
-
-  return filename ? `/media/notes/henpri/${filename}` : path;
+function renderInline(content: NoteInlineSegment[]) {
+  return content.map((part, index) =>
+    part.type === "emphasis" ? <em key={`emphasis-${index}`}>{part.text}</em> : part.text,
+  );
 }
 
-function stripFrontMatter(markdown: string) {
-  return markdown.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "");
-}
-
-function renderInline(text: string) {
-  const parts = text.split(/(\*[^*]+\*)/g);
-
-  return parts.map((part, index) => {
-    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
-      return <em key={`em-${index}`}>{part.slice(1, -1)}</em>;
-    }
-
-    return part;
-  });
-}
-
-function renderNoteMarkdown(markdown: string) {
-  const lines = stripFrontMatter(markdown).split(/\r?\n/);
-  const nodes: ReactNode[] = [];
-  let paragraphBuffer: string[] = [];
-
-  const flushParagraph = () => {
-    const text = paragraphBuffer.join(" ").trim();
-
-    if (text) {
-      nodes.push(
-        <p key={`paragraph-${nodes.length}`}>
-          {renderInline(text)}
-        </p>,
+function renderNoteBlock(block: NoteMarkdownBlock, index: number) {
+  switch (block.type) {
+    case "heading":
+      return <h2 key={`heading-${index}`}>{block.text}</h2>;
+    case "paragraph":
+      return <p key={`paragraph-${index}`}>{renderInline(block.content)}</p>;
+    case "image":
+      return (
+        <figure key={`image-${index}`} className="note-article__figure">
+          <img src={block.src} alt={block.alt} loading="lazy" decoding="async" />
+        </figure>
       );
-    }
-
-    paragraphBuffer = [];
-  };
-
-  lines.forEach((line) => {
-    const trimmed = line.trim();
-
-    if (!trimmed) {
-      flushParagraph();
-      return;
-    }
-
-    if (trimmed.startsWith("[//]:")) {
-      flushParagraph();
-      return;
-    }
-
-    if (/^-{6,}$/.test(trimmed)) {
-      flushParagraph();
-      nodes.push(<hr key={`divider-${nodes.length}`} />);
-      return;
-    }
-
-    if (trimmed.startsWith("### ")) {
-      flushParagraph();
-      nodes.push(<h2 key={`heading-${nodes.length}`}>{trimmed.slice(4)}</h2>);
-      return;
-    }
-
-    const imageMatch = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(trimmed);
-
-    if (imageMatch) {
-      flushParagraph();
-      nodes.push(
-        <figure key={`image-${nodes.length}`} className="note-article__figure">
-          <img src={resolveNoteImage(imageMatch[2])} alt={imageMatch[1] || "Note illustration"} />
-        </figure>,
-      );
-      return;
-    }
-
-    paragraphBuffer.push(trimmed);
-  });
-
-  flushParagraph();
-
-  return nodes;
+    case "divider":
+      return <hr key={`divider-${index}`} />;
+  }
 }
 
 export function MemoryDetailPage() {
@@ -102,19 +40,22 @@ export function MemoryDetailPage() {
   const [content, setContent] = useState<string | null>(null);
   const [loadError, setLoadError] = useState(false);
 
-  useDocumentMeta(
-    detail
+  useDocumentMeta({
+    title: detail
       ? locale === "zh"
         ? `${detail.title} | 冯晨晨`
         : `${detail.title} | Chenchen Feng`
       : locale === "zh"
         ? "小记 | 冯晨晨"
         : "Notes | Chenchen Feng",
-    detail?.summary ??
+    description:
+      detail?.summary ??
       (locale === "zh"
         ? "一些更私人一些的文化小记、兴趣记录与长期参照。"
         : "A quieter set of notes on culture, media, and long-term personal references."),
-  );
+    image: detail?.socialImage ?? detail?.image,
+    type: detail ? "article" : "website",
+  });
 
   useEffect(() => {
     if (!detail) {
@@ -170,13 +111,23 @@ export function MemoryDetailPage() {
             <h1>{detail.title}</h1>
             <p>{detail.summary}</p>
           </div>
-          {detail.image ? <img src={detail.image} alt={detail.title} className="note-detail__hero-image" /> : null}
+          {detail.image ? (
+            <img
+              src={detail.image}
+              alt={detail.title}
+              className="note-detail__hero-image"
+              loading="eager"
+              decoding="async"
+            />
+          ) : null}
         </div>
       </Reveal>
 
       <Reveal delay={120}>
         <article className="note-article">
-          {content ? renderNoteMarkdown(content) : null}
+          {content
+            ? parseNoteMarkdown(content, { assetBasePath: detail.assetBasePath }).map(renderNoteBlock)
+            : null}
           {!content && !loadError ? (
             <p>{locale === "zh" ? "正在加载原始小记内容..." : "Loading original note content..."}</p>
           ) : null}

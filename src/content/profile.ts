@@ -4,7 +4,6 @@ import type { Profile } from "../types/content";
 export const profilesByLocale: Record<Locale, Profile> = {
   en: {
     name: "Chenchen Feng",
-    role: "Graduate student building evolutionary computation research, LLM applications, and dependable backend systems.",
     heroTitle: "Hi, I'm Chenchen Feng — a second-year CS Master's student.",
     shortRole: "EC Researcher + Systems Builder",
     location: "Shenzhen, China",
@@ -109,7 +108,6 @@ export const profilesByLocale: Record<Locale, Profile> = {
   },
   zh: {
     name: "冯晨晨",
-    role: "研究方向覆盖 Evolutionary Computation、LLM 应用以及可靠后端系统实现的计算机硕士研究生。",
     heroTitle: "你好，我是冯晨晨，\n计算机科学研二在读。",
     shortRole: "进化计算研究者 + 系统构建者",
     location: "中国，深圳",

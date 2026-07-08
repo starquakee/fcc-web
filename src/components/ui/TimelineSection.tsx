@@ -26,6 +26,8 @@ export function TimelineSection({ entries, experienceLabel, educationLabel }: Ti
                     src={entry.logoSrc}
                     alt={entry.logoAlt ?? entry.subtitle}
                     className="timeline-row__logo"
+                    loading="lazy"
+                    decoding="async"
                   />
                 ) : null}
               </div>

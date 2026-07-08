@@ -24,7 +24,10 @@ export function HomePage() {
   const projects = projectsByLocale[locale];
   const selectedProjects = projects.slice(0, 2);
 
-  useDocumentMeta(locale === "zh" ? "冯晨晨" : "Chenchen Feng", profile.seoDescription);
+  useDocumentMeta({
+    title: locale === "zh" ? "冯晨晨" : "Chenchen Feng",
+    description: profile.seoDescription,
+  });
 
   const heroFacts = [
     {
@@ -81,6 +84,7 @@ export function HomePage() {
             <img
               src={profile.portrait}
               alt={locale === "zh" ? "冯晨晨头像" : "Portrait of Chenchen Feng"}
+              decoding="async"
             />
           </figure>
         </Reveal>

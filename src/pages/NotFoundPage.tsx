@@ -7,10 +7,10 @@ export function NotFoundPage() {
   const { locale } = useLanguage();
   const text = siteText[locale];
 
-  useDocumentMeta(
-    locale === "zh" ? "页面未找到 | 冯晨晨" : "Page Not Found | Chenchen Feng",
-    locale === "zh" ? "请求的页面不存在。" : "The requested page could not be found.",
-  );
+  useDocumentMeta({
+    title: locale === "zh" ? "页面未找到 | 冯晨晨" : "Page Not Found | Chenchen Feng",
+    description: locale === "zh" ? "请求的页面不存在。" : "The requested page could not be found.",
+  });
 
   return (
     <section className="page-stack">

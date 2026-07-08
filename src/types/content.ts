@@ -22,7 +22,6 @@ export type TimelineEntry = {
 
 export type Profile = {
   name: string;
-  role: string;
   heroTitle: string;
   shortRole: string;
   location: string;
@@ -70,12 +69,20 @@ export type MemoryEntry = {
   tags: string[];
 };
 
+export type MemoryNote = MemoryEntry & {
+  contentPath?: string;
+  detailImage?: string;
+  assetBasePath?: string;
+};
+
 export type MemoryDetail = {
   slug: string;
   title: string;
   year: string;
   summary: string;
   image?: string;
+  assetBasePath?: string;
+  socialImage?: string;
   tags: string[];
   contentPath: string;
 };

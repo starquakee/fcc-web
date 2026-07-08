@@ -2,7 +2,6 @@ import type { Locale } from "../i18n";
 
 type SiteText = {
   skipToContent: string;
-  brandNote: string;
   languageSwitchLabel: string;
   nav: {
     home: string;
@@ -28,8 +27,6 @@ type SiteText = {
     readPaper: string;
     code: string;
     viewCode: string;
-    openDocument: string;
-    openPdf: string;
     experience: string;
     education: string;
     overview: string;
@@ -42,13 +39,9 @@ type SiteText = {
     ctaPrimary: string;
     ctaSecondary: string;
     selectedWorkTitle: string;
-    selectedWorkBody: string;
     focusTitle: string;
-    focusBody: string;
     timelineTitle: string;
-    timelineBody: string;
     contactTitle: string;
-    contactBody: string;
   };
   publications: {
     eyebrow: string;
@@ -56,7 +49,6 @@ type SiteText = {
     body: string;
     noteTitle: string;
     noteHeading: string;
-    noteBody: string;
   };
   projects: {
     eyebrow: string;
@@ -84,7 +76,6 @@ type SiteText = {
 export const siteText: Record<Locale, SiteText> = {
   en: {
     skipToContent: "Skip to content",
-    brandNote: "Editorial-tech portfolio",
     languageSwitchLabel: "Select language",
     nav: {
       home: "Home",
@@ -110,8 +101,6 @@ export const siteText: Record<Locale, SiteText> = {
       readPaper: "Read paper",
       code: "Code",
       viewCode: "View code",
-      openDocument: "Open document",
-      openPdf: "Open PDF",
       experience: "Experience",
       education: "Education",
       overview: "Overview",
@@ -124,14 +113,9 @@ export const siteText: Record<Locale, SiteText> = {
       ctaPrimary: "View selected work",
       ctaSecondary: "Open CV",
       selectedWorkTitle: "Selected Work",
-      selectedWorkBody:
-        "A small mix of publication work and hands-on systems projects that best represents how I think and build.",
       focusTitle: "Research Focus",
-      focusBody: "Research Focus",
       timelineTitle: "Education and Experience",
-      timelineBody: "Timeline",
       contactTitle: "Contact",
-      contactBody: "Contact",
     },
     publications: {
       eyebrow: "Publications",
@@ -141,7 +125,6 @@ export const siteText: Record<Locale, SiteText> = {
       noteTitle: "From paper to code",
       noteHeading:
         "I prefer research that can be inspected, reproduced, and pushed into working systems rather than staying purely conceptual.",
-      noteBody: "Current Positioning",
     },
     projects: {
       eyebrow: "Projects",
@@ -168,7 +151,6 @@ export const siteText: Record<Locale, SiteText> = {
   },
   zh: {
     skipToContent: "跳转到正文",
-    brandNote: "个人学术与技术主页",
     languageSwitchLabel: "选择语言",
     nav: {
       home: "首页",
@@ -194,8 +176,6 @@ export const siteText: Record<Locale, SiteText> = {
       readPaper: "查看论文",
       code: "代码",
       viewCode: "查看代码",
-      openDocument: "打开文档",
-      openPdf: "打开 PDF",
       experience: "实习与经历",
       education: "教育背景",
       overview: "概览",
@@ -208,13 +188,9 @@ export const siteText: Record<Locale, SiteText> = {
       ctaPrimary: "查看精选内容",
       ctaSecondary: "打开简历",
       selectedWorkTitle: "精选内容",
-      selectedWorkBody: "这里选取了最能代表我研究方向和工程能力的一组论文与项目。",
       focusTitle: "研究兴趣",
-      focusBody: "研究兴趣",
       timelineTitle: "教育背景与经历",
-      timelineBody: "时间线",
       contactTitle: "联系方式",
-      contactBody: "联系我",
     },
     publications: {
       eyebrow: "论文",
@@ -222,7 +198,6 @@ export const siteText: Record<Locale, SiteText> = {
       body: "目前的工作主要围绕 Differential Evolution，以及如何通过元层优化、多样性设计和 GPU 加速进一步提升它。",
       noteTitle: "从论文到代码",
       noteHeading: "我更偏好那些可以被检查、复现，并最终落到真实系统里的研究，而不是停留在概念层面。",
-      noteBody: "当前定位",
     },
     projects: {
       eyebrow: "项目",

@@ -12,15 +12,23 @@ export function MemoryPage() {
   const memoryEntries = memoryEntriesByLocale[locale];
   const detailSlugs = new Set(memoryDetailsByLocale[locale].map((entry) => entry.slug));
 
-  useDocumentMeta(
-    locale === "zh" ? "小记 | 冯晨晨" : "Notes | Chenchen Feng",
-    locale === "zh" ? "一些更私人一些的文化小记、兴趣记录与长期参照。" : "A quieter set of notes on culture, media, and long-term personal references.",
-  );
+  useDocumentMeta({
+    title: locale === "zh" ? "小记 | 冯晨晨" : "Notes | Chenchen Feng",
+    description:
+      locale === "zh"
+        ? "一些更私人一些的文化小记、兴趣记录与长期参照。"
+        : "A quieter set of notes on culture, media, and long-term personal references.",
+  });
 
-  const renderEntryBody = (entry: (typeof memoryEntries)[number], linked: boolean) => (
+  const renderEntryBody = (entry: (typeof memoryEntries)[number], linked: boolean, index: number) => (
     <article className="memory-entry">
       <div className="memory-entry__frame">
-        <img src={entry.image} alt={entry.title} />
+        <img
+          src={entry.image}
+          alt={entry.title}
+          loading={index === 0 ? "eager" : "lazy"}
+          decoding="async"
+        />
       </div>
       <div className="memory-entry__body">
         <div className="memory-entry__meta">
@@ -43,13 +51,13 @@ export function MemoryPage() {
       </Reveal>
 
       <Reveal stagger={110} className="memory-list">
-        {memoryEntries.map((entry) =>
+        {memoryEntries.map((entry, index) =>
           detailSlugs.has(entry.slug) ? (
             <Link key={entry.slug} to={`/memory/${entry.slug}`} className="memory-link">
-              {renderEntryBody(entry, true)}
+              {renderEntryBody(entry, true, index)}
             </Link>
           ) : (
-            <div key={entry.slug}>{renderEntryBody(entry, false)}</div>
+            <div key={entry.slug}>{renderEntryBody(entry, false, index)}</div>
           ),
         )}
       </Reveal>
