@@ -59,7 +59,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
       {
         category: "experience",
         period: "2026.02 - Present",
-        title: "Agents Development Intern",
+        title: "Harness Development Intern",
         subtitle: "Moonshot AI (Kimi)",
         logoSrc: "/media/logos/moonshot.webp",
         logoAlt: "Moonshot AI logo",
@@ -147,7 +147,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
       {
         category: "experience",
         period: "2026.02 - 至今",
-        title: "Agents 开发实习生",
+        title: "Harness开发实习生",
         subtitle: "月之暗面（Kimi）",
         logoSrc: "/media/logos/moonshot.webp",
         logoAlt: "月之暗面标志",
