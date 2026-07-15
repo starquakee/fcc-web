@@ -4,13 +4,13 @@ import type { Profile } from "../types/content";
 export const profilesByLocale: Record<Locale, Profile> = {
   en: {
     name: "Chenchen Feng",
-    heroTitle: "Hi, I'm Chenchen Feng — a second-year CS Master's student.",
+    heroTitle: "Hi, I'm Chenchen Feng.",
     shortRole: "EC Researcher + Systems Builder",
     location: "Shenzhen, China",
     institution: "Southern University of Science and Technology",
     email: "chenchenfengcn@gmail.com",
     description:
-      "I am interested in Evolutionary Computation, Backend Engineering, and LLM Applications.",
+      "I'm a second-year master's student in computer science focused on Evolutionary Computation, Backend Engineering, and LLM Applications.",
     extendedBio:
       "My background is a mix of academic experimentation and product-minded implementation. I care about algorithmic clarity, robust system design, and interfaces that feel intentional. Outside work, I keep a long-running habit of documenting anime, visual novels, and story-heavy games, which quietly shapes how I think about structure and detail.",
     portrait: "/media/profile-photo.jpg",
@@ -108,13 +108,13 @@ export const profilesByLocale: Record<Locale, Profile> = {
   },
   zh: {
     name: "冯晨晨",
-    heroTitle: "你好，我是冯晨晨，\n计算机科学研二在读。",
+    heroTitle: "你好，我是冯晨晨。",
     shortRole: "进化计算研究者 + 系统构建者",
     location: "中国，深圳",
     institution: "南方科技大学",
     email: "chenchenfengcn@gmail.com",
     description:
-      "我的研究方向包括 Evolutionary Computation、后端工程和 LLM 应用。",
+      "计算机科学研二在读，研究方向包括 Evolutionary Computation、后端工程和 LLM 应用。",
     extendedBio:
       "我的背景同时包含学术探索和偏产品落地的工程实现。我重视算法逻辑的清晰性、系统设计的稳健性，以及真正具有意图的界面表达。工作之外，我长期记录动画、视觉小说和故事型游戏，这些兴趣也在潜移默化地影响我对结构和细节的理解。",
     portrait: "/media/profile-photo.jpg",

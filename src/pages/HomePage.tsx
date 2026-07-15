@@ -100,7 +100,6 @@ export function HomePage() {
 
       <section>
         <Reveal className="section-header">
-          <span className="section-header__index">01</span>
           <h2 className="section-header__title">{text.home.selectedWorkTitle}</h2>
           <span className="section-header__meta">
             {formatIndex(publications.length + selectedProjects.length)}
@@ -143,7 +142,6 @@ export function HomePage() {
 
       <section>
         <Reveal className="section-header">
-          <span className="section-header__index">02</span>
           <h2 className="section-header__title">{text.home.focusTitle}</h2>
         </Reveal>
         <Reveal stagger={110} className="focus-grid">
@@ -163,7 +161,6 @@ export function HomePage() {
 
       <section>
         <Reveal className="section-header">
-          <span className="section-header__index">03</span>
           <h2 className="section-header__title">{text.home.timelineTitle}</h2>
         </Reveal>
         <Reveal>
@@ -177,7 +174,6 @@ export function HomePage() {
 
       <section>
         <Reveal className="section-header">
-          <span className="section-header__index">04</span>
           <h2 className="section-header__title">{text.home.contactTitle}</h2>
         </Reveal>
         <Reveal stagger={90} className="contact-list">
