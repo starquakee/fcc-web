@@ -260,6 +260,10 @@ h3 {
   align-items: start;
 }
 
+.hero__intro {
+  min-width: 0;
+}
+
 .hero__lede {
   margin: 0 0 var(--space-3);
   font-size: var(--text-lede);
@@ -945,6 +949,22 @@ h3 {
 }
 
 /* ---------- 13. Responsive ---------- */
+
+@media (min-width: 961px) {
+  .hero__grid {
+    align-items: stretch;
+  }
+
+  .hero__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__actions {
+    margin-top: auto;
+  }
+}
 
 @media (max-width: 960px) {
   .hero__grid,

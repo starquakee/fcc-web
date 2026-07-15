@@ -61,7 +61,7 @@ export function HomePage() {
           ))}
         </h1>
         <Reveal delay={250} className="hero__grid">
-          <div>
+          <div className="hero__intro">
             <p className="hero__lede">{profile.description}</p>
             <div className="hero__actions">
               <Link to="/projects" className="button button--primary">
