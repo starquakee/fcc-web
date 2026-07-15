@@ -25,7 +25,6 @@ export function CvPage() {
       <Reveal as="header" className="page-header">
         <div className="page-header__row">
           <div>
-            <span className="eyebrow">{text.cv.eyebrow}</span>
             <h1>{text.cv.title}</h1>
           </div>
           <a className="button button--primary" href="/docs/resume.pdf" target="_blank" rel="noreferrer">

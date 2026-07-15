@@ -46,7 +46,6 @@ export function MemoryPage() {
   return (
     <div className="page-stack">
       <Reveal as="header" className="page-header">
-        <span className="eyebrow">{text.memory.eyebrow}</span>
         <h1>{text.memory.title}</h1>
       </Reveal>
 

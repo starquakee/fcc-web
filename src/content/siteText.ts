@@ -20,7 +20,6 @@ type SiteText = {
   common: {
     tags: string;
     publication: string;
-    journal: string;
     project: string;
     built: string;
     implementation: string;
@@ -44,25 +43,21 @@ type SiteText = {
     contactTitle: string;
   };
   publications: {
-    eyebrow: string;
     title: string;
     body: string;
     noteTitle: string;
     noteHeading: string;
   };
   projects: {
-    eyebrow: string;
     title: string;
     body: string;
   };
   memory: {
-    eyebrow: string;
     title: string;
     readMore: string;
     backToList: string;
   };
   cv: {
-    eyebrow: string;
     title: string;
     download: string;
   };
@@ -94,7 +89,6 @@ export const siteText: Record<Locale, SiteText> = {
     common: {
       tags: "Tags",
       publication: "Publication",
-      journal: "Journal",
       project: "Project",
       built: "Built",
       implementation: "Implementation",
@@ -118,7 +112,6 @@ export const siteText: Record<Locale, SiteText> = {
       contactTitle: "Contact",
     },
     publications: {
-      eyebrow: "Publications",
       title: "Publications",
       body:
         "Current work centers on Differential Evolution and how to push it further with meta-level adaptation, diversity, and GPU-aware execution.",
@@ -127,19 +120,16 @@ export const siteText: Record<Locale, SiteText> = {
         "I prefer research that can be inspected, reproduced, and pushed into working systems rather than staying purely conceptual.",
     },
     projects: {
-      eyebrow: "Projects",
       title: "Projects",
       body:
         "These projects sit across AI tooling, optimization, full-stack workflow software, and networking fundamentals.",
     },
     memory: {
-      eyebrow: "Notes",
       title: "Notes",
       readMore: "Read full note",
       backToList: "Back to Notes",
     },
     cv: {
-      eyebrow: "Curriculum Vitae",
       title: "Curriculum Vitae",
       download: "Download PDF CV",
     },
@@ -169,7 +159,6 @@ export const siteText: Record<Locale, SiteText> = {
     common: {
       tags: "标签",
       publication: "论文",
-      journal: "期刊",
       project: "项目",
       built: "已完成",
       implementation: "实现",
@@ -193,25 +182,21 @@ export const siteText: Record<Locale, SiteText> = {
       contactTitle: "联系方式",
     },
     publications: {
-      eyebrow: "论文",
       title: "论文",
       body: "目前的工作主要围绕 Differential Evolution，以及如何通过元层优化、多样性设计和 GPU 加速进一步提升它。",
       noteTitle: "从论文到代码",
       noteHeading: "我更偏好那些可以被检查、复现，并最终落到真实系统里的研究，而不是停留在概念层面。",
     },
     projects: {
-      eyebrow: "项目",
       title: "项目",
       body: "这些项目覆盖 AI 工具、优化方法、全栈业务系统以及网络基础实现。",
     },
     memory: {
-      eyebrow: "小记",
       title: "小记",
       readMore: "查看全文",
       backToList: "返回小记",
     },
     cv: {
-      eyebrow: "简历",
       title: "简历",
       download: "下载 PDF 简历",
     },

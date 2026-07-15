@@ -25,7 +25,6 @@ export function ProjectsPage() {
   return (
     <div className="page-stack">
       <Reveal as="header" className="page-header">
-        <span className="eyebrow">{text.projects.eyebrow}</span>
         <h1>{text.projects.title}</h1>
         <p className="page-header__lede">{text.projects.body}</p>
       </Reveal>
@@ -35,7 +34,6 @@ export function ProjectsPage() {
           <WorkCard
             key={project.slug}
             index={formatIndex(i + 1)}
-            eyebrow={text.common.project}
             title={project.title}
             subtitle={project.subtitle}
             summary={`${project.summary} ${project.impact}`}

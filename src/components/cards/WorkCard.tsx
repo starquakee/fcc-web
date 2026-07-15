@@ -2,7 +2,7 @@ import styles from "./WorkCard.module.scss";
 
 type WorkCardProps = {
   index?: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   subtitle?: string;
   summary: string;
@@ -27,7 +27,7 @@ export function WorkCard({
     <article className={styles.row}>
       <div className={styles.marker}>
         {index ? <span className={styles.index}>{index}</span> : null}
-        <span className={styles.meta}>{eyebrow}</span>
+        {eyebrow ? <span className={styles.meta}>{eyebrow}</span> : null}
         <span className={styles.meta}>{meta}</span>
       </div>
       <div className={styles.heading}>

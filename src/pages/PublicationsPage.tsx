@@ -27,7 +27,6 @@ export function PublicationsPage() {
   return (
     <div className="page-stack">
       <Reveal as="header" className="page-header">
-        <span className="eyebrow">{text.publications.eyebrow}</span>
         <h1>{text.publications.title}</h1>
         <p className="page-header__lede">{text.publications.body}</p>
       </Reveal>
@@ -37,7 +36,6 @@ export function PublicationsPage() {
           <WorkCard
             key={publication.slug}
             index={formatIndex(i + 1)}
-            eyebrow={text.common.journal}
             title={publication.title}
             subtitle={publication.venue}
             summary={publication.abstract}
