@@ -255,9 +255,17 @@ h3 {
 
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(280px, 340px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
   gap: clamp(1.5rem, 3.5vw, 3rem);
   align-items: start;
+}
+
+.hero__copy-grid {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  align-items: stretch;
 }
 
 .hero__intro {
@@ -951,10 +959,6 @@ h3 {
 /* ---------- 13. Responsive ---------- */
 
 @media (min-width: 961px) {
-  .hero__grid {
-    align-items: stretch;
-  }
-
   .hero__intro {
     display: flex;
     flex-direction: column;
@@ -968,6 +972,7 @@ h3 {
 
 @media (max-width: 960px) {
   .hero__grid,
+  .hero__copy-grid,
   .note-detail__hero,
   .memory-entry,
   .focus-grid,

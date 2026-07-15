@@ -61,25 +61,27 @@ export function HomePage() {
           ))}
         </h1>
         <Reveal delay={250} className="hero__grid">
-          <div className="hero__intro">
-            <p className="hero__lede">{profile.description}</p>
-            <div className="hero__actions">
-              <Link to="/projects" className="button button--primary">
-                {text.home.ctaPrimary}
-              </Link>
-              <Link to="/cv" className="button button--ghost">
-                {text.home.ctaSecondary}
-              </Link>
-            </div>
-          </div>
-          <dl className="hero-facts">
-            {heroFacts.map((fact) => (
-              <div key={fact.label} className="hero-facts__row">
-                <dt className="mono-label">{fact.label}</dt>
-                <dd className="hero-facts__value">{fact.value}</dd>
+          <div className="hero__copy-grid">
+            <div className="hero__intro">
+              <p className="hero__lede">{profile.description}</p>
+              <div className="hero__actions">
+                <Link to="/projects" className="button button--primary">
+                  {text.home.ctaPrimary}
+                </Link>
+                <Link to="/cv" className="button button--ghost">
+                  {text.home.ctaSecondary}
+                </Link>
               </div>
-            ))}
-          </dl>
+            </div>
+            <dl className="hero-facts">
+              {heroFacts.map((fact) => (
+                <div key={fact.label} className="hero-facts__row">
+                  <dt className="mono-label">{fact.label}</dt>
+                  <dd className="hero-facts__value">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
           <figure className="hero__portrait">
             <img
               src={profile.portrait}
