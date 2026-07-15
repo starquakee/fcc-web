@@ -621,16 +621,16 @@ h3 {
   display: block;
   margin-bottom: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-muted);
+  color: var(--ink-soft);
 }
 
 .timeline-row {
   display: grid;
-  grid-template-columns: 9.5rem 3.5rem minmax(0, 1fr);
+  grid-template-columns: 9.5rem 5rem minmax(0, 1fr);
   gap: clamp(1rem, 2.5vw, 2rem);
   padding: var(--space-3) 0;
   border-top: 1px solid var(--hairline);
@@ -638,15 +638,22 @@ h3 {
 
 .timeline-row__period {
   font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  letter-spacing: 0.08em;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--ink-muted);
+  color: var(--ink-soft);
   line-height: 1.7;
 }
 
+.timeline-row__media {
+  display: flex;
+  align-items: flex-start;
+  min-height: 2.75rem;
+}
+
 .timeline-row__logo {
-  max-height: 1.9rem;
+  max-height: 2.75rem;
   max-width: 100%;
   width: auto;
   object-fit: contain;
