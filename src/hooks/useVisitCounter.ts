@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 const COUNTER_NAMESPACE = "chenchen-feng-site";
 const COUNTER_KEY = "visits";
 const SESSION_KEY = "fcc-web:visit-recorded";
+const READ_RETRY_DELAY_MS = 600;
 
 type CounterResponse = {
   count?: number;
@@ -28,6 +29,35 @@ function writeSessionFlag() {
   }
 }
 
+async function requestCounter(endpoint: string, signal: AbortSignal) {
+  const response = await fetch(endpoint, { signal });
+
+  if (!response.ok) {
+    throw new Error(`Counter request failed with status ${response.status}`);
+  }
+
+  const data = (await response.json()) as CounterResponse;
+
+  if (typeof data.count !== "number") {
+    throw new Error("Counter response did not include a count value");
+  }
+
+  return data.count;
+}
+
+async function readCounterWithRetry(endpoint: string, signal: AbortSignal) {
+  try {
+    return await requestCounter(endpoint, signal);
+  } catch (error) {
+    if (signal.aborted) {
+      throw error;
+    }
+
+    await new Promise<void>((resolve) => window.setTimeout(resolve, READ_RETRY_DELAY_MS));
+    return requestCounter(endpoint, signal);
+  }
+}
+
 export function useVisitCounter() {
   const [count, setCount] = useState<number | null>(null);
   const [hasError, setHasError] = useState(false);
@@ -39,32 +69,38 @@ export function useVisitCounter() {
     }
 
     const localPreview = isLocalHost(window.location.hostname);
-    const shouldIncrement = !localPreview && readSessionFlag() !== "1";
-    const endpointBase = `https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${COUNTER_KEY}`;
-    const endpoint = shouldIncrement ? `${endpointBase}/up` : endpointBase;
-    const controller = new AbortController();
-
     setIsLocalPreview(localPreview);
+
+    if (localPreview) {
+      return;
+    }
+
+    const shouldIncrement = readSessionFlag() !== "1";
+    const readEndpoint = `https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${COUNTER_KEY}/`;
+    const incrementEndpoint = `${readEndpoint}up`;
+    const controller = new AbortController();
 
     async function loadCounter() {
       try {
-        const response = await fetch(endpoint, { signal: controller.signal });
-
-        if (!response.ok) {
-          throw new Error(`Counter request failed with status ${response.status}`);
-        }
-
-        const data = (await response.json()) as CounterResponse;
-
-        if (typeof data.count !== "number") {
-          throw new Error("Counter response did not include a count value");
-        }
-
-        setCount(data.count);
+        let nextCount: number;
 
         if (shouldIncrement) {
-          writeSessionFlag();
+          try {
+            nextCount = await requestCounter(incrementEndpoint, controller.signal);
+            writeSessionFlag();
+          } catch (error) {
+            if (controller.signal.aborted) {
+              return;
+            }
+
+            nextCount = await readCounterWithRetry(readEndpoint, controller.signal);
+          }
+        } else {
+          nextCount = await readCounterWithRetry(readEndpoint, controller.signal);
         }
+
+        setCount(nextCount);
+        setHasError(false);
       } catch (error) {
         if (controller.signal.aborted) {
           return;
