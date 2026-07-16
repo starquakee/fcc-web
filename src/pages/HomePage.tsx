@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react";
-import { Link } from "react-router-dom";
 import { WorkCard } from "../components/cards/WorkCard";
 import { Reveal } from "../components/ui/Reveal";
 import { TimelineSection } from "../components/ui/TimelineSection";
@@ -48,8 +47,7 @@ export function HomePage() {
     <div className="page-stack">
       <header className="hero">
         <Reveal variant="fade" className="hero__topline">
-          <span className="eyebrow">{text.home.eyebrow}</span>
-          <span className="mono-label">{profile.location}</span>
+          <span className="hero__location mono-label">{profile.location}</span>
         </Reveal>
         <h1 className="hero__title">
           {profile.heroTitle.split("\n").map((line, i) => (
@@ -61,27 +59,14 @@ export function HomePage() {
           ))}
         </h1>
         <Reveal delay={250} className="hero__grid">
-          <div className="hero__copy-grid">
-            <div className="hero__intro">
-              <p className="hero__lede">{profile.description}</p>
-              <div className="hero__actions">
-                <Link to="/projects" className="button button--primary">
-                  {text.home.ctaPrimary}
-                </Link>
-                <Link to="/cv" className="button button--ghost">
-                  {text.home.ctaSecondary}
-                </Link>
+          <dl className="hero-facts">
+            {heroFacts.map((fact) => (
+              <div key={fact.label} className="hero-facts__row">
+                <dt className="mono-label">{fact.label}</dt>
+                <dd className="hero-facts__value">{fact.value}</dd>
               </div>
-            </div>
-            <dl className="hero-facts">
-              {heroFacts.map((fact) => (
-                <div key={fact.label} className="hero-facts__row">
-                  <dt className="mono-label">{fact.label}</dt>
-                  <dd className="hero-facts__value">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+            ))}
+          </dl>
           <figure className="hero__portrait">
             <img
               src={profile.portrait}

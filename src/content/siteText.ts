@@ -34,7 +34,6 @@ type SiteText = {
     researchIdentity: string;
   };
   home: {
-    eyebrow: string;
     ctaPrimary: string;
     ctaSecondary: string;
     selectedWorkTitle: string;
@@ -103,7 +102,6 @@ export const siteText: Record<Locale, SiteText> = {
       researchIdentity: "Research Identity",
     },
     home: {
-      eyebrow: "Research + Engineering",
       ctaPrimary: "View selected work",
       ctaSecondary: "Open CV",
       selectedWorkTitle: "Selected Work",
@@ -173,7 +171,6 @@ export const siteText: Record<Locale, SiteText> = {
       researchIdentity: "研究取向",
     },
     home: {
-      eyebrow: "研究 + 工程",
       ctaPrimary: "查看精选内容",
       ctaSecondary: "打开简历",
       selectedWorkTitle: "精选内容",

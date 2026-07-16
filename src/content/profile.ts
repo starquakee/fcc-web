@@ -14,7 +14,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     extendedBio:
       "My background is a mix of academic experimentation and product-minded implementation. I care about algorithmic clarity, robust system design, and interfaces that feel intentional. Outside work, I keep a long-running habit of documenting anime, visual novels, and story-heavy games, which quietly shapes how I think about structure and detail.",
     portrait: "/media/profile-photo.jpg",
-    availability: "Since 2026.02: Agents Development Intern at Moonshot AI (Kimi), building agentic applications for LLM products.",
+    availability: "Since 2026.02: Intern with the Harness team at Moonshot AI.",
     seoDescription:
       "Chenchen Feng is a graduate student focused on evolutionary computation, LLM systems, and backend engineering.",
     heroStats: [
@@ -118,7 +118,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     extendedBio:
       "我的背景同时包含学术探索和偏产品落地的工程实现。我重视算法逻辑的清晰性、系统设计的稳健性，以及真正具有意图的界面表达。工作之外，我长期记录动画、视觉小说和故事型游戏，这些兴趣也在潜移默化地影响我对结构和细节的理解。",
     portrait: "/media/profile-photo.jpg",
-    availability: "自 2026.02 起在月之暗面（Kimi）实习，负责 LLM 产品中的 Agents 开发。",
+    availability: "自 2026.02 起在月之暗面 Harness 部门实习。",
     seoDescription: "冯晨晨，研究方向包括 Evolutionary Computation、LLM 系统以及后端工程。",
     heroStats: [
       { label: "期刊论文", value: "2" },
