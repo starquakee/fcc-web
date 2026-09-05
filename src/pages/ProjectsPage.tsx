@@ -14,13 +14,7 @@ export function ProjectsPage() {
   const text = siteText[locale];
   const projects = projectsByLocale[locale];
 
-  useDocumentMeta({
-    title: locale === "zh" ? "项目 | 冯晨晨" : "Projects | Chenchen Feng",
-    description:
-      locale === "zh"
-        ? "冯晨晨的系统与工程项目。"
-        : "Selected systems and engineering projects by Chenchen Feng.",
-  });
+  useDocumentMeta({ route: "projects" });
 
   return (
     <div className="page-stack">

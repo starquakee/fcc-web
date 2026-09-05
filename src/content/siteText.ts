@@ -3,13 +3,6 @@ import type { Locale } from "../i18n";
 type SiteText = {
   skipToContent: string;
   languageSwitchLabel: string;
-  nav: {
-    home: string;
-    publications: string;
-    projects: string;
-    cv: string;
-    memory: string;
-  };
   footer: {
     email: string;
     contactCta: string;
@@ -71,13 +64,6 @@ export const siteText: Record<Locale, SiteText> = {
   en: {
     skipToContent: "Skip to content",
     languageSwitchLabel: "Select language",
-    nav: {
-      home: "Home",
-      publications: "Publications",
-      projects: "Projects",
-      cv: "CV",
-      memory: "Notes",
-    },
     footer: {
       email: "Email",
       contactCta: "Feel free to ask me anything",
@@ -140,13 +126,6 @@ export const siteText: Record<Locale, SiteText> = {
   zh: {
     skipToContent: "跳转到正文",
     languageSwitchLabel: "选择语言",
-    nav: {
-      home: "首页",
-      publications: "论文",
-      projects: "项目",
-      cv: "简历",
-      memory: "小记",
-    },
     footer: {
       email: "邮箱",
       contactCta: "欢迎随时来信",

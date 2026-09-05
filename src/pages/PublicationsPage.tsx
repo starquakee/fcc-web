@@ -16,13 +16,7 @@ export function PublicationsPage() {
   const profile = profilesByLocale[locale];
   const publications = publicationsByLocale[locale];
 
-  useDocumentMeta({
-    title: locale === "zh" ? "论文 | 冯晨晨" : "Publications | Chenchen Feng",
-    description:
-      locale === "zh"
-        ? "冯晨晨的论文与研究成果。"
-        : "Journal publications and research output by Chenchen Feng.",
-  });
+  useDocumentMeta({ route: "publications" });
 
   return (
     <div className="page-stack">

@@ -7,6 +7,7 @@ import { MemoryPage } from "./pages/MemoryPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { PublicationsPage } from "./pages/PublicationsPage";
+import { getRoutePath, routeManifest } from "./routeManifest";
 
 export const router = createBrowserRouter(
   [
@@ -16,12 +17,12 @@ export const router = createBrowserRouter(
       errorElement: <NotFoundPage />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: "publications", element: <PublicationsPage /> },
-        { path: "projects", element: <ProjectsPage /> },
-        { path: "memory", element: <MemoryPage /> },
-        { path: "memory/:slug", element: <MemoryDetailPage /> },
-        { path: "cv", element: <CvPage /> },
-        { path: "*", element: <NotFoundPage /> },
+        { path: getRoutePath("publications").slice(1), element: <PublicationsPage /> },
+        { path: getRoutePath("projects").slice(1), element: <ProjectsPage /> },
+        { path: getRoutePath("memory").slice(1), element: <MemoryPage /> },
+        { path: getRoutePath("memoryDetail").slice(1), element: <MemoryDetailPage /> },
+        { path: getRoutePath("cv").slice(1), element: <CvPage /> },
+        { path: routeManifest.notFound.path, element: <NotFoundPage /> },
       ],
     },
   ],

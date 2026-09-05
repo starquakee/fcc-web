@@ -4,6 +4,7 @@ import { profilesByLocale } from "../../content/profile";
 import { siteText } from "../../content/siteText";
 import { useVisitCounter } from "../../hooks/useVisitCounter";
 import { useLanguage } from "../../i18n";
+import { getRouteLabel, getRoutePath, primaryRouteIds, routeManifest } from "../../routeManifest";
 import styles from "./SiteShell.module.scss";
 
 export function SiteShell() {
@@ -12,13 +13,11 @@ export function SiteShell() {
   const text = siteText[locale];
   const profile = profilesByLocale[locale];
   const { count, hasError, isLocalPreview } = useVisitCounter();
-  const primaryLinks = [
-    { to: "/", label: text.nav.home, end: true },
-    { to: "/publications", label: text.nav.publications },
-    { to: "/projects", label: text.nav.projects },
-    { to: "/cv", label: text.nav.cv },
-    { to: "/memory", label: text.nav.memory },
-  ] as const;
+  const primaryLinks = primaryRouteIds.map((routeId) => ({
+    to: getRoutePath(routeId),
+    label: getRouteLabel(routeId, locale),
+    end: routeManifest[routeId].end,
+  }));
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -41,7 +40,7 @@ export function SiteShell() {
       </a>
       <div className={styles.headerWrap}>
         <header className={styles.header}>
-          <Link to="/" className={styles.brand} aria-label={text.nav.home}>
+          <Link to={getRoutePath("home")} className={styles.brand} aria-label={getRouteLabel("home", locale)}>
             {profile.name}
           </Link>
           <div className={styles.headerActions}>

@@ -12,13 +12,7 @@ export function CvPage() {
   const profile = profilesByLocale[locale];
   const socialLinks = socialLinksByLocale[locale];
 
-  useDocumentMeta({
-    title: locale === "zh" ? "简历 | 冯晨晨" : "CV | Chenchen Feng",
-    description:
-      locale === "zh"
-        ? "冯晨晨的教育背景、经历和 PDF 简历下载。"
-        : "Experience, education, and CV download for Chenchen Feng.",
-  });
+  useDocumentMeta({ route: "cv" });
 
   return (
     <div className="page-stack">

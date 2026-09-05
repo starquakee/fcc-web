@@ -24,8 +24,7 @@ export function HomePage() {
   const selectedProjects = projects.slice(0, 2);
 
   useDocumentMeta({
-    title: locale === "zh" ? "冯晨晨" : "Chenchen Feng",
-    description: profile.seoDescription,
+    route: "home",
   });
 
   const heroFacts = [

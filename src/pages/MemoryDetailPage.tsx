@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Reveal } from "../components/ui/Reveal";
-import { memoryDetailsByLocale } from "../content/memoryDetails";
+import { getMemoryDetail } from "../content/memoryCatalog";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 import { parseNoteMarkdown } from "../lib/noteMarkdown";
 import type { NoteInlineSegment, NoteMarkdownBlock } from "../lib/noteMarkdown";
+import { getRoutePath } from "../routeManifest";
 import { NotFoundPage } from "./NotFoundPage";
 
 function renderInline(content: NoteInlineSegment[]) {
@@ -36,26 +37,11 @@ export function MemoryDetailPage() {
   const { slug } = useParams();
   const { locale } = useLanguage();
   const text = siteText[locale];
-  const detail = memoryDetailsByLocale[locale].find((entry) => entry.slug === slug);
+  const detail = getMemoryDetail(locale, slug);
   const [content, setContent] = useState<string | null>(null);
   const [loadError, setLoadError] = useState(false);
 
-  useDocumentMeta({
-    title: detail
-      ? locale === "zh"
-        ? `${detail.title} | 冯晨晨`
-        : `${detail.title} | Chenchen Feng`
-      : locale === "zh"
-        ? "小记 | 冯晨晨"
-        : "Notes | Chenchen Feng",
-    description:
-      detail?.summary ??
-      (locale === "zh"
-        ? "一些更私人一些的文化小记、兴趣记录与长期参照。"
-        : "A quieter set of notes on culture, media, and long-term personal references."),
-    image: detail?.socialImage ?? detail?.image,
-    type: detail ? "article" : "website",
-  });
+  useDocumentMeta({ route: "memoryDetail", params: { slug } });
 
   useEffect(() => {
     if (!detail) {
@@ -100,7 +86,7 @@ export function MemoryDetailPage() {
   return (
     <div className="page-stack">
       <Reveal as="header" className="page-header">
-        <Link to="/memory" className="arrow-link arrow-link--back">
+        <Link to={getRoutePath("memory")} className="arrow-link arrow-link--back">
           {text.memory.backToList}
         </Link>
         <div className={detail.image ? "note-detail__hero" : "note-detail__hero note-detail__hero--text-only"}>

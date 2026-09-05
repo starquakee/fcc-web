@@ -1,10 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseNoteMarkdown } from "../src/lib/noteMarkdown";
-import { memoryDetailsByLocale } from "../src/content/memoryDetails";
-import { memoryEntriesByLocale } from "../src/content/memory";
+import { getMemoryDetail, listMemory } from "../src/content/memoryCatalog";
 import { profilesByLocale } from "../src/content/profile";
 import { siteText } from "../src/content/siteText";
+import { getRouteMeta, primaryRouteIds, routeManifest } from "../src/routeManifest";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -48,34 +48,42 @@ function checkNoteMarkdownParsing() {
 }
 
 function checkMemoryContentIntegrity() {
-  const memoryListSource = readFileSync("src/content/memory.ts", "utf8");
-  const memoryDetailSource = readFileSync("src/content/memoryDetails.ts", "utf8");
-
-  assert(
-    memoryListSource.includes("memoryNotesByLocale"),
-    "memory list data should derive from unified memoryNotesByLocale",
-  );
-  assert(
-    memoryDetailSource.includes("memoryNotesByLocale"),
-    "memory detail data should derive from unified memoryNotesByLocale",
-  );
-
   for (const locale of ["en", "zh"] as const) {
-    const entries = memoryEntriesByLocale[locale];
-    const details = memoryDetailsByLocale[locale];
+    const entries = listMemory(locale);
     const entrySlugs = new Set(entries.map((entry) => entry.slug));
-    const detailSlugs = new Set(details.map((detail) => detail.slug));
 
     assert(entrySlugs.size === entries.length, `${locale} memory entries should not contain duplicate slugs`);
-    assert(detailSlugs.size === details.length, `${locale} memory details should not contain duplicate slugs`);
 
-    for (const detail of details) {
-      assert(entrySlugs.has(detail.slug), `${locale} detail ${detail.slug} should have a list entry`);
+    for (const entry of entries) {
+      const detail = getMemoryDetail(locale, entry.slug);
+
+      if (!detail) {
+        continue;
+      }
+
       assert(detail.contentPath.startsWith("/notes/"), `${locale} detail ${detail.slug} should load from /notes`);
       assert(
         existsSync(join("public", detail.contentPath)),
         `${locale} detail ${detail.slug} should point to an existing markdown file`,
       );
+    }
+  }
+}
+
+function checkRouteManifest() {
+  const paths = Object.values(routeManifest).map((route) => route.path);
+
+  assert(new Set(paths).size === paths.length, "route manifest should not contain duplicate paths");
+
+  for (const routeId of primaryRouteIds) {
+    assert(routeManifest[routeId].navLabel?.en, `${routeId} should have an English navigation label`);
+    assert(routeManifest[routeId].navLabel?.zh, `${routeId} should have a Chinese navigation label`);
+  }
+
+  for (const locale of ["en", "zh"] as const) {
+    for (const routeId of Object.keys(routeManifest) as Array<keyof typeof routeManifest>) {
+      const meta = getRouteMeta(routeId, locale);
+      assert(meta.title && meta.description, `${routeId} should have ${locale} metadata`);
     }
   }
 }
@@ -133,6 +141,10 @@ if (target === "meta" || target === "all") {
   checkDocumentMetaShape();
 }
 
+if (target === "routes" || target === "all") {
+  checkRouteManifest();
+}
+
 if (target === "images" || target === "all") {
   checkImageLoadingShape();
 }
@@ -142,6 +154,7 @@ assert(
     target === "memory" ||
     target === "text" ||
     target === "meta" ||
+    target === "routes" ||
     target === "images" ||
     target === "all",
   `unknown check target: ${target}`,

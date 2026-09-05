@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Reveal } from "../components/ui/Reveal";
-import { memoryEntriesByLocale } from "../content/memory";
-import { memoryDetailsByLocale } from "../content/memoryDetails";
+import { hasMemoryDetail, listMemory } from "../content/memoryCatalog";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
@@ -9,16 +8,9 @@ import { useLanguage } from "../i18n";
 export function MemoryPage() {
   const { locale } = useLanguage();
   const text = siteText[locale];
-  const memoryEntries = memoryEntriesByLocale[locale];
-  const detailSlugs = new Set(memoryDetailsByLocale[locale].map((entry) => entry.slug));
+  const memoryEntries = listMemory(locale);
 
-  useDocumentMeta({
-    title: locale === "zh" ? "小记 | 冯晨晨" : "Notes | Chenchen Feng",
-    description:
-      locale === "zh"
-        ? "一些更私人一些的文化小记、兴趣记录与长期参照。"
-        : "A quieter set of notes on culture, media, and long-term personal references.",
-  });
+  useDocumentMeta({ route: "memory" });
 
   const renderEntryBody = (entry: (typeof memoryEntries)[number], linked: boolean, index: number) => (
     <article className="memory-entry">
@@ -51,7 +43,7 @@ export function MemoryPage() {
 
       <Reveal stagger={110} className="memory-list">
         {memoryEntries.map((entry, index) =>
-          detailSlugs.has(entry.slug) ? (
+          hasMemoryDetail(locale, entry.slug) ? (
             <Link key={entry.slug} to={`/memory/${entry.slug}`} className="memory-link">
               {renderEntryBody(entry, true, index)}
             </Link>

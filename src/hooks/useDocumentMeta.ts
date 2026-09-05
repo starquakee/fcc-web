@@ -1,14 +1,15 @@
 import { useEffect } from "react";
+import type { RouteId, RouteMeta } from "../routeManifest";
+import { getRouteMeta } from "../routeManifest";
+import { useLanguage } from "../i18n";
 
 const SITE_ORIGIN = "https://starquake.top";
 const DEFAULT_IMAGE = "/media/profile-photo.jpg";
 
-export type DocumentMetaOptions = {
-  title: string;
-  description: string;
-  image?: string;
+export type DocumentMetaOptions = Partial<RouteMeta> & {
+  route: RouteId;
+  params?: Record<string, string | undefined>;
   canonicalPath?: string;
-  type?: "website" | "article";
 };
 
 function updateMeta(selector: string, value: string) {
@@ -47,27 +48,28 @@ function toAbsoluteUrl(path: string) {
   return new URL(path, SITE_ORIGIN).href;
 }
 
-export function useDocumentMeta({
-  title,
-  description,
-  image = DEFAULT_IMAGE,
-  canonicalPath,
-  type = "website",
-}: DocumentMetaOptions) {
+export function useDocumentMeta({ route, params, title, description, image, canonicalPath, type }: DocumentMetaOptions) {
+  const { locale } = useLanguage();
+  const routeMeta = getRouteMeta(route, locale, params);
+  const resolvedTitle = title ?? routeMeta.title;
+  const resolvedDescription = description ?? routeMeta.description;
+  const resolvedImage = image ?? routeMeta.image ?? DEFAULT_IMAGE;
+  const resolvedType = type ?? routeMeta.type ?? "website";
+
   useEffect(() => {
     const canonicalUrl = toAbsoluteUrl(canonicalPath ?? window.location.pathname);
-    const imageUrl = toAbsoluteUrl(image);
+    const imageUrl = toAbsoluteUrl(resolvedImage);
 
-    document.title = title;
-    updateMeta('meta[name="description"]', description);
-    updateMeta('meta[property="og:title"]', title);
-    updateMeta('meta[property="og:description"]', description);
-    updateMeta('meta[property="og:type"]', type);
+    document.title = resolvedTitle;
+    updateMeta('meta[name="description"]', resolvedDescription);
+    updateMeta('meta[property="og:title"]', resolvedTitle);
+    updateMeta('meta[property="og:description"]', resolvedDescription);
+    updateMeta('meta[property="og:type"]', resolvedType);
     updateMeta('meta[property="og:image"]', imageUrl);
     updateMeta('meta[name="twitter:card"]', "summary_large_image");
-    updateMeta('meta[name="twitter:title"]', title);
-    updateMeta('meta[name="twitter:description"]', description);
+    updateMeta('meta[name="twitter:title"]', resolvedTitle);
+    updateMeta('meta[name="twitter:description"]', resolvedDescription);
     updateMeta('meta[name="twitter:image"]', imageUrl);
     updateCanonicalLink(canonicalUrl);
-  }, [canonicalPath, description, image, title, type]);
+  }, [canonicalPath, resolvedDescription, resolvedImage, resolvedTitle, resolvedType]);
 }
