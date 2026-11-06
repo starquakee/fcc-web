@@ -1,6 +1,5 @@
 import { Reveal } from "../components/ui/Reveal";
 import { TimelineSection } from "../components/ui/TimelineSection";
-import { socialLinksByLocale } from "../content/links";
 import { profilesByLocale } from "../content/profile";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
@@ -10,7 +9,6 @@ export function CvPage() {
   const { locale } = useLanguage();
   const text = siteText[locale];
   const profile = profilesByLocale[locale];
-  const socialLinks = socialLinksByLocale[locale];
 
   useDocumentMeta({ route: "cv" });
 
@@ -25,25 +23,6 @@ export function CvPage() {
             {text.cv.download}
           </a>
         </div>
-      </Reveal>
-
-      <Reveal className="note-duo">
-        <article>
-          <span className="eyebrow">{text.common.overview}</span>
-          <h2>{profile.shortRole}</h2>
-          <p>{profile.description}</p>
-        </article>
-        <article>
-          <span className="eyebrow">{text.common.contact}</span>
-          <h2>{profile.email}</h2>
-          <div className="list-links">
-            {socialLinks.map((link) => (
-              <a key={link.label} href={link.href} className="arrow-link" target="_blank" rel="noreferrer">
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </article>
       </Reveal>
 
       <Reveal>
