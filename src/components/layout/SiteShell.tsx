@@ -26,12 +26,12 @@ export function SiteShell() {
 
   const visitCountText =
     count !== null
-      ? `${text.footer.visits} — ${new Intl.NumberFormat(locale === "zh" ? "zh-CN" : "en-US").format(count)}`
+      ? `${text.footer.visits}: ${new Intl.NumberFormat(locale === "zh" ? "zh-CN" : "en-US").format(count)}`
       : isLocalPreview
         ? text.footer.visitsPreview
         : hasError
           ? text.footer.visitsUnavailable
-          : `${text.footer.visits} — ...`;
+          : `${text.footer.visits}: ...`;
 
   return (
     <div className={styles.shell}>
@@ -40,7 +40,7 @@ export function SiteShell() {
       </a>
       <div className={styles.headerWrap}>
         <header className={styles.header}>
-          <Link to={getRoutePath("home")} className={styles.brand} aria-label={getRouteLabel("home", locale)}>
+          <Link to={getRoutePath("home")} className={styles.brand} aria-label={`${profile.name}, ${getRouteLabel("home", locale)}`}>
             {profile.name}
           </Link>
           <div className={styles.headerActions}>

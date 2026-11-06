@@ -28,6 +28,7 @@ export function PublicationsPage() {
       <Reveal stagger={90} className="work-index">
         {publications.map((publication, i) => (
           <WorkCard
+            headingLevel="h2"
             key={publication.slug}
             index={formatIndex(i + 1)}
             title={publication.title}

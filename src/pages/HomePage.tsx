@@ -118,7 +118,6 @@ export function HomePage() {
               subtitle={project.subtitle}
               summary={project.summary}
               tags={project.stack}
-              meta={text.common.built}
               tagsLabel={text.common.tags}
               links={project.links}
             />
@@ -166,7 +165,6 @@ export function HomePage() {
           {socialLinks.map((link) => (
             <a key={link.label} href={link.href} className="contact-row" target="_blank" rel="noreferrer">
               <strong>{link.label}</strong>
-              <span>{link.note}</span>
               <span className="contact-row__arrow" aria-hidden="true">
                 →
               </span>

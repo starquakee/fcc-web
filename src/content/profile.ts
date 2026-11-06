@@ -14,7 +14,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     extendedBio:
       "My background is a mix of academic experimentation and product-minded implementation. I care about algorithmic clarity, robust system design, and interfaces that feel intentional. Outside work, I keep a long-running habit of documenting anime, visual novels, and story-heavy games, which quietly shapes how I think about structure and detail.",
     portrait: "/media/profile-photo.jpg",
-    availability: "Since 2026.02: Intern with the Harness team at Moonshot AI.",
+    availability: "Since 2026.03: Intern with the Harness team at Moonshot AI.",
     seoDescription:
       "Chenchen Feng is a graduate student focused on evolutionary computation, LLM systems, and backend engineering.",
     heroStats: [
@@ -44,22 +44,12 @@ export const profilesByLocale: Record<Locale, Profile> = {
           "Graceful degradation for long-running document tasks",
         ],
       },
-      {
-        title: "Backend Engineering",
-        description:
-          "Turning ideas into reliable software with a bias toward data integrity, clear interfaces, and practical deployment.",
-        bullets: [
-          "Database and service design",
-          "Concurrency-aware application features",
-          "Operational thinking beyond proof-of-concept demos",
-        ],
-      },
     ],
     timeline: [
       {
         category: "experience",
-        period: "2026.02 - Present",
-        title: "Harness Development Intern",
+        period: "2026.03 - Present",
+        title: "Harness Development",
         subtitle: "Moonshot AI (Kimi)",
         logoSrc: "/media/logos/moonshot.webp",
         logoAlt: "Moonshot AI logo",
@@ -71,7 +61,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
       {
         category: "experience",
         period: "2025.12 - 2026.02",
-        title: "LLM Post-Training Intern",
+        title: "LLM Algorithms",
         subtitle: "Sangfor",
         logoSrc: "/media/logos/sangfor.png",
         logoAlt: "Sangfor logo",
@@ -118,7 +108,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
     extendedBio:
       "我的背景同时包含学术探索和偏产品落地的工程实现。我重视算法逻辑的清晰性、系统设计的稳健性，以及真正具有意图的界面表达。工作之外，我长期记录动画、视觉小说和故事型游戏，这些兴趣也在潜移默化地影响我对结构和细节的理解。",
     portrait: "/media/profile-photo.jpg",
-    availability: "自 2026.02 起在月之暗面 Harness 部门实习。",
+    availability: "自 2026.03 起在月之暗面 Harness 部门实习。",
     seoDescription: "冯晨晨，研究方向包括 Evolutionary Computation、LLM 系统以及后端工程。",
     heroStats: [
       { label: "期刊论文", value: "2" },
@@ -137,17 +127,12 @@ export const profilesByLocale: Record<Locale, Profile> = {
         description: "构建可追踪、可用、能在研究流程里真正落地的 RAG 与多智能体系统。",
         bullets: ["带引用追踪的检索系统", "多智能体协作工作流", "面向长任务的降级与稳定性设计"],
       },
-      {
-        title: "Backend Engineering",
-        description: "把想法落到可靠软件里，重视数据一致性、接口清晰度以及部署后的可维护性。",
-        bullets: ["数据库与服务设计", "并发场景下的功能实现", "超越 Demo 的系统性思考"],
-      },
     ],
     timeline: [
       {
         category: "experience",
-        period: "2026.02 - 至今",
-        title: "Harness开发实习生",
+        period: "2026.03 - 至今",
+        title: "Harness开发",
         subtitle: "月之暗面（Kimi）",
         logoSrc: "/media/logos/moonshot.webp",
         logoAlt: "月之暗面标志",
@@ -159,7 +144,7 @@ export const profilesByLocale: Record<Locale, Profile> = {
       {
         category: "experience",
         period: "2025.12 - 2026.02",
-        title: "安全大模型实习生",
+        title: "大模型算法",
         subtitle: "深信服",
         logoSrc: "/media/logos/sangfor.png",
         logoAlt: "深信服标志",

@@ -4,10 +4,11 @@ type WorkCardProps = {
   index?: string;
   eyebrow?: string;
   title: string;
+  headingLevel?: "h2" | "h3";
   subtitle?: string;
   summary: string;
   tags: string[];
-  meta: string;
+  meta?: string;
   tagsLabel?: string;
   links?: Array<{ label: string; href: string }>;
 };
@@ -16,6 +17,7 @@ export function WorkCard({
   index,
   eyebrow,
   title,
+  headingLevel: Heading = "h3",
   subtitle,
   summary,
   tags,
@@ -28,10 +30,10 @@ export function WorkCard({
       <div className={styles.marker}>
         {index ? <span className={styles.index}>{index}</span> : null}
         {eyebrow ? <span className={styles.meta}>{eyebrow}</span> : null}
-        <span className={styles.meta}>{meta}</span>
+        {meta ? <span className={styles.meta}>{meta}</span> : null}
       </div>
       <div className={styles.heading}>
-        <h3 className={styles.title}>{title}</h3>
+        <Heading className={styles.title}>{title}</Heading>
         {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
       </div>
       <div className={styles.detail}>

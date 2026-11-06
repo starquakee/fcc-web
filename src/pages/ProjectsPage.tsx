@@ -26,6 +26,7 @@ export function ProjectsPage() {
       <Reveal stagger={90} className="work-index">
         {projects.map((project, i) => (
           <WorkCard
+            headingLevel="h2"
             key={project.slug}
             index={formatIndex(i + 1)}
             title={project.title}
