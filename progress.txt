@@ -138,3 +138,9 @@ Baseline: b84802f (origin/main)
 - Actual browser click downloaded Chenchen-Feng-CV.pdf; downloaded SHA256 exactly equals public/docs/resume.pdf.
 - Lighthouse CV accessibility100, heading-order pass, no failed accessibility audits. Screenshot saved outside source.
 - Awaiting production verification; passes remains false.
+
+## 2026-11-08 - US-005 production verified
+- Fix commit3bff8eb6a337192e82652c8c670c3d09271f611c pushed main; corresponding Vercel status success.
+- Live browser confirms H1,H2,H3,H3,H2,H3,H3 hierarchy, Chenchen-Feng-CV.pdf download attribute, lazy PDF iframe and language aria-pressed states.
+- Public PDF response byte-for-byte matches the source resume. The actual local-browser download also matched SHA256.
+- US-005 passes=true. Next US-006 adds behavioral validation and CI; dependency audit gate waits for US-007.
