@@ -16,30 +16,6 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://starquake.top/media/profile-photo.jpg" />
     <meta name="theme-color" content="#f5f1e8" />
-    <script>
-      (function () {
-        const params = new URLSearchParams(window.location.search);
-        const redirectedPath = params.get("p");
-        if (!redirectedPath) {
-          return;
-        }
-
-        const isGitHubPages = window.location.hostname.endsWith("github.io");
-        const currentSegments = window.location.pathname.split("/").filter(Boolean);
-        const baseSegments = isGitHubPages && currentSegments.length > 0 ? [currentSegments[0]] : [];
-        const basePath = baseSegments.length > 0 ? "/" + baseSegments.join("/") : "";
-        const query = params.get("q");
-        const hash = params.get("h");
-        const nextUrl =
-          basePath +
-          "/" +
-          redirectedPath.replace(/^\/+/, "") +
-          (query ? "?" + query : "") +
-          (hash ? "#" + hash : "");
-
-        window.history.replaceState(null, "", nextUrl);
-      })();
-    </script>
     <title>Chenchen Feng</title>
   </head>
   <body>

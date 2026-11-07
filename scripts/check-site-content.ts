@@ -5,6 +5,57 @@ import { getMemoryDetail, listMemory } from "../src/content/memoryCatalog";
 import { profilesByLocale } from "../src/content/profile";
 import { siteText } from "../src/content/siteText";
 import { getRouteMeta, primaryRouteIds, routeManifest } from "../src/routeManifest";
+import { siteConfig } from "../src/siteConfig";
+import { createCrawlFiles, getCrawlPaths } from "./site-crawl";
+
+function checkCrawlFiles() {
+  const paths = getCrawlPaths();
+  assert(new Set(paths).size === paths.length, "crawl paths should be unique across locales");
+  assert(paths.every((path) => !/[:*]/.test(path)), "crawl paths must not contain route patterns");
+  for (const routeId of primaryRouteIds) {
+    assert(paths.includes(routeManifest[routeId].path), `${routeId} should be crawlable`);
+  }
+  for (const locale of ["en", "zh"] as const) {
+    for (const entry of listMemory(locale)) {
+      if (getMemoryDetail(locale, entry.slug)) {
+        assert(paths.includes(`/memory/${encodeURIComponent(entry.slug)}`), `${locale}/${entry.slug} should be crawlable`);
+      }
+    }
+  }
+
+  const files = createCrawlFiles();
+  for (const [fileName, expected] of Object.entries(files)) {
+    assert(readFileSync(join("dist", fileName), "utf8") === expected, `build should emit current ${fileName}; run npm run build first`);
+  }
+  const locations = [...files["sitemap.xml"].matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
+  assert(locations.length === paths.length, "sitemap should include every crawl path exactly once");
+  assert(locations.every((url) => new URL(url).origin === siteConfig.origin), "sitemap should use the approved origin");
+  assert(files["robots.txt"].includes(`Sitemap: ${siteConfig.origin}/sitemap.xml`), "robots should advertise the sitemap");
+  const encodedPath = `/memory/${encodeURIComponent("中文 & /?#%")}`;
+  assert(
+    createCrawlFiles([encodedPath])["sitemap.xml"].includes(`${siteConfig.origin}${encodedPath}`),
+    "sitemap should preserve encoded slug characters without double encoding",
+  );
+  assert(createCrawlFiles(["/a?x=1&y=2"])["sitemap.xml"].includes("?x=1&amp;y=2"), "sitemap URLs should be XML escaped");
+  for (const invalid of ["*", "/memory/:slug", "//example.com/path"]) {
+    let rejected = false;
+    try { createCrawlFiles([invalid]); } catch { rejected = true; }
+    assert(rejected, `crawl generation should reject ${invalid}`);
+  }
+
+  const config = JSON.parse(readFileSync("vercel.json", "utf8")) as {
+    rewrites: Array<{ source: string; destination: string }>;
+  };
+  const applicationPaths = Object.values(routeManifest).map((route) => route.path).filter((path) => path !== "/" && path !== "*");
+  assert(config.rewrites.length === applicationPaths.length, "rewrites should cover only application routes");
+  for (const path of applicationPaths) {
+    assert(
+      config.rewrites.some((rule) => rule.source === path && rule.destination === "/index.html"),
+      `Vercel should internally rewrite ${path} to the SPA`,
+    );
+  }
+  assert(!existsSync("dist/404.html"), "build should not ship the GitHub Pages redirect document");
+}
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -149,6 +200,10 @@ if (target === "images" || target === "all") {
   checkImageLoadingShape();
 }
 
+if (target === "crawl" || target === "all") {
+  checkCrawlFiles();
+}
+
 assert(
   target === "note" ||
     target === "memory" ||
@@ -156,6 +211,7 @@ assert(
     target === "meta" ||
     target === "routes" ||
     target === "images" ||
+    target === "crawl" ||
     target === "all",
   `unknown check target: ${target}`,
 );

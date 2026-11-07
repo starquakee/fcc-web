@@ -16,3 +16,21 @@ Baseline: b84802f (origin/main)
 - Created clean codex/site-audit-fixes worktree and seven ordered stories.
 - Git Bash, Node, Git, GitHub CLI, and logged-in Codex CLI confirmed available.
 - Normal pushes target origin/main; no force pushes or unsafe execution.
+
+## 2026-11-07 - US-001 implementation; local validation blocked
+- Added vercel.json with internal rewrites for /publications, /projects, /cv, /memory, and /memory/:slug. Root is served by index.html; static asset directories have no SPA rewrite. Removed both halves of the GitHub Pages redirect workaround (public/404.html and the inline decoder in index.html).
+- Added pure src/siteConfig.ts with the approved origin and scripts/site-crawl.ts deriving deduplicated crawl paths from routeManifest and both locales' memory detail catalogs. Vite emits robots.txt and sitemap.xml into dist on each build; slugs are URL encoded and sitemap values XML escaped. No dependencies or content/UI changes.
+- Added focused crawl checks to scripts/check-site-content.ts: primary/note route coverage, locale deduplication, wildcard exclusion, origin, URL/XML encoding fixtures, invalid path rejection, generated output equality, rewrite coverage, and absence of the old 404 document. Run npm run build before content checks because crawl checks inspect dist outputs.
+- npm run build: FAILED/BLOCKED (exit 1). The tsc stage completed; Vite's esbuild config loader failed with Cannot read directory "../../../..": Access is denied, then could not resolve vite.config.ts.
+- npm run check:content: FAILED/BLOCKED (exit 1). esbuild reported the same directory access denial and could not resolve ./scripts/check-site-content.ts. Assertions did not execute.
+- npm run check:content -- crawl: FAILED/BLOCKED (exit 1), same esbuild access denial. No generated-output or focused-check success claimed.
+- git diff --check: PASSED. Git status also warns that the user-global .config/git/ignore is unreadable; workspace diff inspection still works. This is filesystem traversal denial, not npm cache denial, so changing npm cache would not address it.
+- Reference consulted: https://vercel.com/docs/frameworks/frontend/vite#using-vite-to-make-spas. Applied its internal index.html rewrite approach with explicit application route scope to avoid swallowing missing assets.
+- Supervisor next: rerun npm run build, npm run check:content, npm run check:content -- crawl, and git diff --check in reviewed execution. Then browser-check direct navigation/refresh and query/hash preservation (including ordinary ?p= query values), both locales, and release-check all five primary routes and all three note slugs for HTTP 200; actual PDF/image MIME types; missing /media/ and /docs/ resources for HTTP 404; robots/sitemap for HTTP 200, proper types and the eight unique approved-origin URLs. Vite preview alone does not prove Vercel routing.
+- Kept passes=false and did not set the ready/awaiting-verification note because local validation is incomplete. No commit, push, additional worktree, or later story started. Canonical/share metadata and stale documentation remain for US-002 as scoped.
+
+## 2026-11-07 - US-001 supervisor local verification
+- Reviewed explicit Vercel app rewrites, crawl generation and removal of the paired GitHub Pages redirect scripts.
+- Reviewed execution passed npm run build, npm run check:content, npm run check:content -- crawl, and git diff --check.
+- Browser: /cv?p=keep&check=route#main-content survived refresh and switch from Chinese to English; CV rendered and no horizontal overflow.
+- Pending real Vercel deployment and production endpoint verification; passes remains false.
