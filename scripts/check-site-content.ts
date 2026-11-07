@@ -1,14 +1,20 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { deepStrictEqual, throws } from "node:assert";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { basename, dirname, join, resolve } from "node:path";
+import { tmpdir } from "node:os";
 import { parseNoteMarkdown } from "../src/lib/noteMarkdown";
 import { getImageMetadata, getResponsiveImageProps, imageSizes } from "../src/lib/responsiveImages";
 import { imageMetadata } from "../src/generated/imageMetadata";
 import { getMemoryDetail, listMemory } from "../src/content/memoryCatalog";
 import { profilesByLocale } from "../src/content/profile";
 import { siteText } from "../src/content/siteText";
+import { projectsByLocale } from "../src/content/projects";
+import { publicationsByLocale } from "../src/content/publications";
+import { socialLinksByLocale } from "../src/content/links";
 import { getRouteMeta, primaryRouteIds, routeManifest } from "../src/routeManifest";
 import { siteConfig } from "../src/siteConfig";
 import { createCrawlFiles, getCrawlPaths } from "./site-crawl";
+import { assertDocumentUrls, assertLocalAsset, assertLocaleKeys } from "./content-validation";
 
 function checkCrawlFiles() {
   const paths = getCrawlPaths();
@@ -101,6 +107,7 @@ function checkNoteMarkdownParsing() {
 }
 
 function checkMemoryContentIntegrity() {
+  deepStrictEqual(listMemory("en").map((entry) => entry.slug), listMemory("zh").map((entry) => entry.slug), "note slugs and order must match across locales");
   for (const locale of ["en", "zh"] as const) {
     const entries = listMemory(locale);
     const entrySlugs = new Set(entries.map((entry) => entry.slug));
@@ -109,16 +116,21 @@ function checkMemoryContentIntegrity() {
 
     for (const entry of entries) {
       const detail = getMemoryDetail(locale, entry.slug);
+      assert(Boolean(detail) === Boolean(getMemoryDetail(locale === "en" ? "zh" : "en", entry.slug)), `${entry.slug} should have detail parity`);
+      assert(entry.title.trim() && entry.summary.trim(), `${locale}/${entry.slug} needs title and summary`);
+      assertLocalAsset(entry.image, "public", "dist");
 
       if (!detail) {
         continue;
       }
 
       assert(detail.contentPath.startsWith("/notes/"), `${locale} detail ${detail.slug} should load from /notes`);
-      assert(
-        existsSync(join("public", detail.contentPath)),
-        `${locale} detail ${detail.slug} should point to an existing markdown file`,
-      );
+      const markdown = assertLocalAsset(detail.contentPath, "public", "dist").toString("utf8");
+      const blocks = parseNoteMarkdown(markdown, { assetBasePath: detail.assetBasePath });
+      assert(blocks.some((block) => block.type === "paragraph"), `${locale}/${detail.slug} needs a nonempty article body`);
+      for (const block of blocks) {
+        if (block.type === "image") assertLocalAsset(block.src, "public", "dist");
+      }
     }
   }
 }
@@ -141,37 +153,59 @@ function checkRouteManifest() {
   }
 }
 
-function checkSiteTextShape() {
-  for (const locale of ["en", "zh"] as const) {
-    assert(!("brandNote" in siteText[locale]), `${locale} siteText should not keep unused brandNote`);
-    assert(!("openDocument" in siteText[locale].common), `${locale} common text should not keep unused openDocument`);
-    assert(!("openPdf" in siteText[locale].common), `${locale} common text should not keep unused openPdf`);
-    assert(!("selectedWorkBody" in siteText[locale].home), `${locale} home text should not keep unused selectedWorkBody`);
-    assert(!("noteBody" in siteText[locale].publications), `${locale} publications text should not keep unused noteBody`);
-    assert(!("role" in profilesByLocale[locale]), `${locale} profile should not keep unused role`);
+function checkLocaleContent() {
+  assertLocaleKeys(siteText.en, siteText.zh);
+  for (const [label, catalog] of Object.entries({ publications: publicationsByLocale, projects: projectsByLocale })) {
+    const slugs = catalog.en.map((entry) => entry.slug);
+    assert(new Set(slugs).size === slugs.length, `${label} slugs must be unique`);
+    deepStrictEqual(slugs, catalog.zh.map((entry) => entry.slug), `${label} locale slugs and order must match`);
   }
+  deepStrictEqual(socialLinksByLocale.en.map((link) => link.href), socialLinksByLocale.zh.map((link) => link.href), "social destinations should match across locales");
+  for (const locale of ["en", "zh"] as const) {
+    const profile = profilesByLocale[locale];
+    assert(profile.heroTitle.trim() && profile.seoDescription.trim(), `${locale} profile needs heading and metadata`);
+    assertLocalAsset(profile.portrait, "public", "dist");
+    for (const entry of profile.timeline) {
+      if (entry.logoSrc) assertLocalAsset(entry.logoSrc, "public", "dist");
+    }
+    for (const publication of publicationsByLocale[locale]) {
+      assert(publication.title.trim() && publication.summary.trim(), `${locale}/${publication.slug} needs title and summary`);
+      const pdf = assertLocalAsset(publication.pdfUrl, "public", "dist");
+      assert(pdf.toString("ascii", 0, 5) === "%PDF-", `publication should link to PDF bytes: ${publication.slug}`);
+    }
+    for (const project of projectsByLocale[locale]) {
+      assert(project.title.trim() && project.summary.trim(), `${locale}/${project.slug} needs title and summary`);
+      // Empty project links are an accepted, deferred content decision.
+      for (const link of project.links) {
+        if (link.href.startsWith("/")) assertLocalAsset(link.href, "public", "dist");
+      }
+    }
+  }
+  const resume = assertLocalAsset("/docs/resume.pdf", "public", "dist");
+  assert(resume.toString("ascii", 0, 5) === "%PDF-", "CV resource must contain a PDF");
 }
 
-function checkDocumentMetaShape() {
-  const hookSource = readFileSync("src/hooks/useDocumentMeta.ts", "utf8");
+function checkDocumentMetadata() {
   const builtHtml = readFileSync("dist/index.html", "utf8");
-
-  assert(hookSource.includes("DocumentMetaOptions"), "useDocumentMeta should expose an object options interface");
-  assert(hookSource.includes('meta[property="og:image"]'), "useDocumentMeta should update og:image");
-  assert(hookSource.includes('meta[property="og:url"]'), "useDocumentMeta should update og:url");
-  assert(hookSource.includes('meta[name="twitter:card"]'), "useDocumentMeta should update twitter:card");
-  assert(hookSource.includes('link[rel="canonical"]'), "useDocumentMeta should update canonical link");
 
   function readHeadUrl(tag: "meta" | "link", key: string, value: string, attribute: string) {
     const tags = [...builtHtml.matchAll(new RegExp(`<${tag}\\b[^>]*>`, "g"))];
     const matches = tags.filter(([markup]) => markup.includes(`${key}="${value}"`));
     assert(matches.length === 1, `built HTML should have exactly one ${value} tag`);
-    return matches[0][0].match(new RegExp(`${attribute}="([^"]*)"`))?.[1];
+    const content = matches[0][0].match(new RegExp(`${attribute}="([^"]*)"`))?.[1];
+    assert(content, `built HTML ${value} needs ${attribute}`);
+    return content;
   }
 
   const homeUrl = new URL(routeManifest.home.path, siteConfig.origin).href;
   const homeMeta = getRouteMeta("home", "en");
   const defaultImageUrl = new URL(homeMeta.image ?? siteConfig.defaultImage, siteConfig.origin).href;
+  assertDocumentUrls({
+    canonical: readHeadUrl("link", "rel", "canonical", "href"),
+    openGraphUrl: readHeadUrl("meta", "property", "og:url", "content"),
+    openGraphImage: readHeadUrl("meta", "property", "og:image", "content"),
+    twitterImage: readHeadUrl("meta", "name", "twitter:image", "content"),
+  }, siteConfig.origin);
   assert(readHeadUrl("link", "rel", "canonical", "href") === homeUrl, "initial canonical should use the approved origin");
   assert(readHeadUrl("meta", "property", "og:url", "content") === homeUrl, "initial og:url should match canonical");
   assert(readHeadUrl("meta", "property", "og:image", "content") === defaultImageUrl, "initial og:image should use the shared default");
@@ -196,13 +230,11 @@ function checkDocumentMetaShape() {
     const url = new URL(imagePath, siteConfig.origin);
     assert(url.origin === siteConfig.origin, `share image should use the approved origin: ${imagePath}`);
     const assetPath = decodeURIComponent(url.pathname);
-    const original = readFileSync(join("public", assetPath));
-    const built = readFileSync(join("dist", assetPath));
+    const original = assertLocalAsset(assetPath, "public", "dist");
     const isJpeg = original.subarray(0, 3).toString("hex") === "ffd8ff";
     const isPng = original.subarray(0, 8).toString("hex") === "89504e470d0a1a0a";
     const isWebp = original.toString("ascii", 0, 4) === "RIFF" && original.toString("ascii", 8, 12) === "WEBP";
     assert(isJpeg || isPng || isWebp, `share asset should contain image bytes: ${imagePath}`);
-    assert(original.equals(built), `build should preserve the share image: ${imagePath}`);
   }
 
   const bundleFiles = readdirSync("dist/assets").filter((file) => file.endsWith(".js"));
@@ -211,16 +243,6 @@ function checkDocumentMetaShape() {
     assert(!readFileSync(file, "utf8").includes("starquake.top"), `${file} should not contain the obsolete metadata origin`);
   }
   console.log(`Metadata checks passed: initial HTML, both locales, ${imagePaths.size} share images, and built origin references.`);
-}
-
-function checkImageLoadingShape() {
-  const memoryPageSource = readFileSync("src/pages/MemoryPage.tsx", "utf8");
-  const memoryDetailSource = readFileSync("src/pages/MemoryDetailPage.tsx", "utf8");
-
-  assert(memoryPageSource.includes('loading={index === 0 ? "eager" : "lazy"}'), "memory list images should lazy-load after the first item");
-  assert(memoryPageSource.includes('decoding="async"'), "memory list images should decode asynchronously");
-  assert(memoryDetailSource.includes('loading="lazy"'), "note article images should lazy-load");
-  assert(memoryDetailSource.includes('decoding="async"'), "note detail images should decode asynchronously");
 }
 
 function checkResponsiveImages() {
@@ -295,6 +317,35 @@ function checkResponsiveImages() {
 
 const target = process.argv[2] ?? "all";
 
+function checkValidationFixtures() {
+  // Positive controls plus deliberate failures exercise the same validators used
+  // above without changing any tracked content or generated build output.
+  const root = mkdtempSync(join(tmpdir(), "fcc-content-fixtures-"));
+  try {
+    writeFileSync(join(root, "valid.txt"), "fixture");
+    assertLocalAsset("/valid.txt", root, root);
+    throws(() => assertLocalAsset("/missing.txt", root), /Missing local asset/);
+    throws(() => assertLocalAsset("/valid.txt", root, join(root, "missing-build")), /Missing local asset/);
+  } finally {
+    assert(dirname(root) === resolve(tmpdir()) && basename(root).startsWith("fcc-content-fixtures-"), "fixture cleanup must stay in its temporary directory");
+    rmSync(root, { recursive: true, force: true });
+  }
+  const valid = {
+    canonical: `${siteConfig.origin}/memory`,
+    openGraphUrl: `${siteConfig.origin}/memory`,
+    openGraphImage: `${siteConfig.origin}${siteConfig.defaultImage}`,
+    twitterImage: `${siteConfig.origin}${siteConfig.defaultImage}`,
+  };
+  assertDocumentUrls(valid, siteConfig.origin);
+  for (const key of Object.keys(valid)) {
+    throws(() => assertDocumentUrls({ ...valid, [key]: "https://wrong-origin.invalid/fixture" }, siteConfig.origin), /approved origin/);
+  }
+  throws(() => assertDocumentUrls({ ...valid, canonical: `${valid.canonical}?fixture=1` }, siteConfig.origin), /query and hash/);
+  throws(() => assertLocaleKeys({ title: "Title" }, {}), /locale keys/);
+  throws(() => assertLocaleKeys({ title: "Title" }, { title: " " }), /nonempty copy/);
+  console.log("Validation fixtures passed: valid input accepted; missing source/build assets, wrong origins, canonical queries and locale gaps rejected.");
+}
+
 if (target === "note" || target === "all") {
   checkNoteMarkdownParsing();
 }
@@ -304,11 +355,11 @@ if (target === "memory" || target === "all") {
 }
 
 if (target === "text" || target === "all") {
-  checkSiteTextShape();
+  checkLocaleContent();
 }
 
 if (target === "meta" || target === "all") {
-  checkDocumentMetaShape();
+  checkDocumentMetadata();
 }
 
 if (target === "routes" || target === "all") {
@@ -316,12 +367,15 @@ if (target === "routes" || target === "all") {
 }
 
 if (target === "images" || target === "all") {
-  checkImageLoadingShape();
   checkResponsiveImages();
 }
 
 if (target === "crawl" || target === "all") {
   checkCrawlFiles();
+}
+
+if (target === "fixtures" || target === "all") {
+  checkValidationFixtures();
 }
 
 assert(
@@ -332,6 +386,7 @@ assert(
     target === "routes" ||
     target === "images" ||
     target === "crawl" ||
+    target === "fixtures" ||
     target === "all",
   `unknown check target: ${target}`,
 );

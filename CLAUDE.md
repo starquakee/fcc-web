@@ -9,8 +9,9 @@ Personal portfolio site (Chenchen Feng) — React 19 + TypeScript + Vite SPA, de
 ## Commands
 
 - `npm run dev` — start the Vite dev server
-- `npm run build` — type-check (`tsc`) then build to `dist`, including initial HTML metadata, `robots.txt`, and `sitemap.xml`
-- `npm run check:content` — run content, route, metadata, image-loading, and crawl checks after building; `npm run check:content -- meta` runs the focused metadata checks. There is no browser test suite or ESLint config yet.
+- `npm run build` — type-check app and validation tooling, then build to `dist`, including initial HTML metadata, `robots.txt`, and `sitemap.xml`
+- `npm run check:content` — check content, locale parity, local source/build assets, metadata, image geometry, crawl outputs, and failure fixtures after building; `npm run check:content -- meta` or `-- fixtures` runs a focused check. Runtime metadata and image-loading behavior are covered by Playwright. There is no ESLint config yet.
+- `npm run test:e2e` — run Chromium desktop/mobile smoke tests against the production build on isolated port 4187. Run `npm run build` first and install Chromium once with `npx playwright install chromium`. See `tests/README.md` for coverage and production-validation limits. GitHub Actions runs clean install, image verification, build, content checks, and browser tests.
 - `npm run preview` — serve the production build locally
 
 ## Architecture
