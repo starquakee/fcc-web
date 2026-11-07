@@ -2,6 +2,7 @@ import type { Locale } from "../i18n";
 
 type SiteText = {
   skipToContent: string;
+  primaryNavigationLabel: string;
   languageSwitchLabel: string;
   footer: {
     email: string;
@@ -52,6 +53,7 @@ type SiteText = {
   cv: {
     title: string;
     download: string;
+    pdfTitle: string;
   };
   notFound: {
     title: string;
@@ -63,6 +65,7 @@ type SiteText = {
 export const siteText: Record<Locale, SiteText> = {
   en: {
     skipToContent: "Skip to content",
+    primaryNavigationLabel: "Primary navigation",
     languageSwitchLabel: "Select language",
     footer: {
       email: "Email",
@@ -116,6 +119,7 @@ export const siteText: Record<Locale, SiteText> = {
     cv: {
       title: "Curriculum Vitae",
       download: "Download PDF CV",
+      pdfTitle: "Chenchen Feng CV PDF",
     },
     notFound: {
       title: "That page does not exist.",
@@ -125,6 +129,7 @@ export const siteText: Record<Locale, SiteText> = {
   },
   zh: {
     skipToContent: "跳转到正文",
+    primaryNavigationLabel: "主导航",
     languageSwitchLabel: "选择语言",
     footer: {
       email: "邮箱",
@@ -175,6 +180,7 @@ export const siteText: Record<Locale, SiteText> = {
     cv: {
       title: "简历",
       download: "下载 PDF 简历",
+      pdfTitle: "冯晨晨简历 PDF",
     },
     notFound: {
       title: "页面不存在。",

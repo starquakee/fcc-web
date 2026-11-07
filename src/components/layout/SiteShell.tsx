@@ -44,7 +44,7 @@ export function SiteShell() {
             {profile.name}
           </Link>
           <div className={styles.headerActions}>
-            <nav className={styles.nav} aria-label="Primary">
+            <nav className={styles.nav} aria-label={text.primaryNavigationLabel}>
               {primaryLinks.map((link) => (
                 <NavLink
                   key={link.to}
@@ -62,6 +62,7 @@ export function SiteShell() {
               <button
                 type="button"
                 className={`${styles.localeButton} ${locale === "en" ? styles.localeButtonActive : ""}`.trim()}
+                aria-pressed={locale === "en"}
                 onClick={() => setLocale("en")}
               >
                 EN
@@ -72,6 +73,7 @@ export function SiteShell() {
               <button
                 type="button"
                 className={`${styles.localeButton} ${locale === "zh" ? styles.localeButtonActive : ""}`.trim()}
+                aria-pressed={locale === "zh"}
                 onClick={() => setLocale("zh")}
               >
                 中文

@@ -17,7 +17,7 @@ export function TimelineSection({ entries, experienceLabel, educationLabel }: Ti
     <div className="timeline">
       {groups.map((group) => (
         <section key={group.label} className="timeline-group">
-          <span className="timeline-group__title">{group.label}</span>
+          <h2 className="timeline-group__title">{group.label}</h2>
           {group.items.map((entry) => (
             <article key={`${entry.period}-${entry.title}`} className="timeline-row">
               <div className="timeline-row__period">{entry.period}</div>

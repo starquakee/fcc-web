@@ -74,7 +74,7 @@
       ],
       "priority": 5,
       "passes": false,
-      "notes": ""
+      "notes": "Build/content and mobile/desktop browser checks passed; actual PDF download SHA256 matches source; CV Lighthouse accessibility100 and heading order pass. Awaiting production."
     },
     {
       "id": "US-006",

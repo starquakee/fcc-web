@@ -19,7 +19,7 @@ export function CvPage() {
           <div>
             <h1>{text.cv.title}</h1>
           </div>
-          <a className="button button--primary" href="/docs/resume.pdf" target="_blank" rel="noreferrer">
+          <a className="button button--primary" href="/docs/resume.pdf" download="Chenchen-Feng-CV.pdf">
             {text.cv.download}
           </a>
         </div>
@@ -35,7 +35,7 @@ export function CvPage() {
 
       <Reveal>
         <div className="pdf-frame">
-          <iframe title="Chenchen Feng CV PDF" src="/docs/resume.pdf" />
+          <iframe title={text.cv.pdfTitle} src="/docs/resume.pdf" loading="lazy" />
         </div>
       </Reveal>
     </div>
