@@ -102,8 +102,8 @@
         "Any major-migration blocker remains explicitly failing"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": "Implementation ready; awaiting supervisor browser/release verification. Clean npm ci, full npm audit (zero), build, content/fixtures, image reproducibility and all32 browser tests passed."
+      "passes": true,
+      "notes": "Released 4dd17b1; clean install, audit zero, build/content/images and32 browser tests pass. GitHub CI42393540177 and Vercel success; all14 live HTTP checks, exact new bundle and PDF bytes verified."
     }
   ]
 }
