@@ -332,6 +332,7 @@ h3 {
 
 .hero__portrait img {
   width: 100%;
+  height: auto;
   aspect-ratio: 0.85 / 1;
   object-fit: cover;
   object-position: center top;
@@ -673,6 +674,7 @@ h3 {
   max-height: 4rem;
   max-width: 100%;
   width: auto;
+  height: auto;
   object-fit: contain;
 }
 
@@ -836,6 +838,7 @@ h3 {
 
 .note-article__figure img {
   width: 100%;
+  height: auto;
   border-radius: var(--radius);
   border: 1px solid var(--hairline);
 }

@@ -7,6 +7,7 @@ import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 import { parseNoteMarkdown } from "../lib/noteMarkdown";
 import type { NoteInlineSegment, NoteMarkdownBlock } from "../lib/noteMarkdown";
+import { getImageMetadata, getResponsiveImageProps, imageSizes } from "../lib/responsiveImages";
 import { getRoutePath } from "../routeManifest";
 import { NotFoundPage } from "./NotFoundPage";
 
@@ -22,12 +23,21 @@ function renderNoteBlock(block: NoteMarkdownBlock, index: number) {
       return <h2 key={`heading-${index}`}>{block.text}</h2>;
     case "paragraph":
       return <p key={`paragraph-${index}`}>{renderInline(block.content)}</p>;
-    case "image":
+    case "image": {
+      const dimensions = getImageMetadata(block.src);
       return (
         <figure key={`image-${index}`} className="note-article__figure">
-          <img src={block.src} alt={block.alt} loading="lazy" decoding="async" />
+          <img
+            src={block.src}
+            alt={block.alt}
+            width={dimensions?.width}
+            height={dimensions?.height}
+            loading="lazy"
+            decoding="async"
+          />
         </figure>
       );
+    }
     case "divider":
       return <hr key={`divider-${index}`} />;
   }
@@ -99,7 +109,7 @@ export function MemoryDetailPage() {
           </div>
           {detail.image ? (
             <img
-              src={detail.image}
+              {...getResponsiveImageProps(detail.image, imageSizes.noteHero)}
               alt={detail.title}
               className="note-detail__hero-image"
               loading="eager"

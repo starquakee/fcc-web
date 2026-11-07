@@ -4,6 +4,7 @@ import { hasMemoryDetail, listMemory } from "../content/memoryCatalog";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
+import { getResponsiveImageProps, imageSizes } from "../lib/responsiveImages";
 
 export function MemoryPage() {
   const { locale } = useLanguage();
@@ -16,7 +17,7 @@ export function MemoryPage() {
     <article className="memory-entry">
       <div className="memory-entry__frame">
         <img
-          src={entry.image}
+          {...getResponsiveImageProps(entry.image, imageSizes.noteCover)}
           alt={entry.title}
           loading={index === 0 ? "eager" : "lazy"}
           decoding="async"

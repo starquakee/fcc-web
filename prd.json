@@ -45,7 +45,7 @@
       ],
       "priority": 3,
       "passes": false,
-      "notes": ""
+      "notes": "Build/content/image reproducibility and mobile/desktop bilingual visual checks passed. 3-run mobile notes median performance 83->96 and LCP 4357->2487 ms; awaiting production verification."
     },
     {
       "id": "US-004",

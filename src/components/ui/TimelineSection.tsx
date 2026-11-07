@@ -1,4 +1,5 @@
 import type { TimelineEntry } from "../../types/content";
+import { getResponsiveImageProps, imageSizes } from "../../lib/responsiveImages";
 
 type TimelineSectionProps = {
   entries: TimelineEntry[];
@@ -23,7 +24,7 @@ export function TimelineSection({ entries, experienceLabel, educationLabel }: Ti
               <div className="timeline-row__media">
                 {entry.logoSrc ? (
                   <img
-                    src={entry.logoSrc}
+                    {...getResponsiveImageProps(entry.logoSrc, imageSizes.timelineLogo)}
                     alt={entry.logoAlt ?? entry.subtitle}
                     className="timeline-row__logo"
                     loading="lazy"

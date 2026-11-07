@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "check:content": "node scripts/check-site-content.mjs",
+    "images:generate": "node scripts/optimize-images.mjs",
+    "check:images": "node scripts/optimize-images.mjs --check",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -14,6 +16,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",
     "esbuild": "^0.27.0",
+    "sharp": "0.35.5",
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
   },

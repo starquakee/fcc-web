@@ -1,6 +1,8 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { parseNoteMarkdown } from "../src/lib/noteMarkdown";
+import { getImageMetadata, getResponsiveImageProps, imageSizes } from "../src/lib/responsiveImages";
+import { imageMetadata } from "../src/generated/imageMetadata";
 import { getMemoryDetail, listMemory } from "../src/content/memoryCatalog";
 import { profilesByLocale } from "../src/content/profile";
 import { siteText } from "../src/content/siteText";
@@ -221,6 +223,76 @@ function checkImageLoadingShape() {
   assert(memoryDetailSource.includes('decoding="async"'), "note detail images should decode asynchronously");
 }
 
+function checkResponsiveImages() {
+  let variantCount = 0;
+  for (const [src, metadata] of Object.entries(imageMetadata)) {
+    assert(existsSync(join("public", src)), `image metadata should refer to a preserved original: ${src}`);
+    assert(metadata.width > 0 && metadata.height > 0, `image dimensions should be positive: ${src}`);
+    let previousWidth = 0;
+    for (const variant of metadata.variants ?? []) {
+      assert(variant.width > previousWidth, `responsive widths should be unique and increasing: ${src}`);
+      assert(variant.width <= metadata.width && variant.height <= metadata.height, `variant should not upscale: ${src}`);
+      assert(Math.abs(variant.height - metadata.height * variant.width / metadata.width) <= 1, `variant should preserve aspect ratio: ${src}`);
+      const data = readFileSync(join("public", variant.src));
+      assert(data.toString("ascii", 0, 4) === "RIFF" && data.toString("ascii", 8, 12) === "WEBP", `variant should contain WebP bytes: ${variant.src}`);
+      assert(data.length === variant.bytes, `variant byte count should match metadata: ${variant.src}`);
+      assert(data.equals(readFileSync(join("dist", variant.src))), `build should contain current variant: ${variant.src}`);
+      previousWidth = variant.width;
+      variantCount++;
+    }
+  }
+
+  function checkResponsiveSource(src: string, sizes: string) {
+    const metadata = getImageMetadata(src);
+    assert(metadata?.variants?.length, `responsive source should have variants: ${src}`);
+    const props = getResponsiveImageProps(src, sizes);
+    assert(props.width === metadata.width && props.height === metadata.height, `responsive image should reserve original geometry: ${src}`);
+    assert(metadata.variants.some((variant) => variant.src === props.src), `fallback should use an optimized variant: ${src}`);
+    assert(props.sizes === sizes, `responsive image should declare its layout size: ${src}`);
+    assert(props.srcSet === metadata.variants.map((variant) => `${variant.src} ${variant.width}w`).join(", "), `srcset should describe every generated width: ${src}`);
+  }
+
+  let articleImageCount = 0;
+  for (const locale of ["en", "zh"] as const) {
+    const profile = profilesByLocale[locale];
+    checkResponsiveSource(profile.portrait, imageSizes.portrait);
+    for (const entry of profile.timeline) {
+      if (entry.logoSrc) checkResponsiveSource(entry.logoSrc, imageSizes.timelineLogo);
+    }
+    const entries = listMemory(locale);
+    const firstCover = getImageMetadata(entries[0].image);
+    assert(firstCover?.variants?.every((variant) => variant.bytes <= 100_000), `${locale} first cover should never serve a WebP over 100 KB`);
+    for (const entry of entries) {
+      checkResponsiveSource(entry.image, imageSizes.noteCover);
+      const detail = getMemoryDetail(locale, entry.slug);
+      if (!detail) continue;
+      if (detail.image) checkResponsiveSource(detail.image, imageSizes.noteHero);
+      const blocks = parseNoteMarkdown(readFileSync(join("public", detail.contentPath), "utf8"), { assetBasePath: detail.assetBasePath });
+      for (const block of blocks) {
+        if (block.type !== "image") continue;
+        const metadata = getImageMetadata(block.src);
+        assert(metadata && metadata.width > 0 && metadata.height > 0, `resolved article image should have dimensions before loading: ${locale}/${entry.slug}/${block.src}`);
+        assert(readFileSync(join("public", block.src)).equals(readFileSync(join("dist", block.src))), `article image should be copied unchanged into the build: ${block.src}`);
+        articleImageCount++;
+      }
+    }
+  }
+  assert(articleImageCount > 0, "image checks should exercise actual article images");
+
+  // Historical ../images/ links must use the note's asset base before metadata
+  // lookup. Absolute URLs and URL suffixes must not break the geometry lookup.
+  const fixture = parseNoteMarkdown("![Fixture](../../images/img_1.jpg?size=full#figure)", { assetBasePath: "/media/notes/henpri" });
+  assert(fixture[0]?.type === "image", "image geometry fixture should parse");
+  const dimensions = getImageMetadata(fixture[0].src);
+  assert(dimensions?.width === 1280 && dimensions.height === 720, "resolved relative image should reserve its real 16:9 geometry");
+  assert(getImageMetadata("/media/notes/henpri/%69mg_1.jpg") === dimensions, "encoded local image paths should resolve to the same metadata");
+  for (const src of ["https://example.com/unknown.jpg", "/media/missing.jpg", "/media/%broken.jpg"]) {
+    const props = getResponsiveImageProps(src, "100vw");
+    assert(props.src === src && props.width === undefined && props.height === undefined && props.srcSet === undefined, `unknown assets should not receive invented dimensions or variants: ${src}`);
+  }
+  console.log(`Image checks passed: ${variantCount} variants and ${articleImageCount} article image references across both locales.`);
+}
+
 const target = process.argv[2] ?? "all";
 
 if (target === "note" || target === "all") {
@@ -245,6 +317,7 @@ if (target === "routes" || target === "all") {
 
 if (target === "images" || target === "all") {
   checkImageLoadingShape();
+  checkResponsiveImages();
 }
 
 if (target === "crawl" || target === "all") {

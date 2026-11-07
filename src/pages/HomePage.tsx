@@ -9,6 +9,7 @@ import { publicationsByLocale } from "../content/publications";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
+import { getResponsiveImageProps, imageSizes } from "../lib/responsiveImages";
 
 function formatIndex(value: number) {
   return String(value).padStart(2, "0");
@@ -68,7 +69,7 @@ export function HomePage() {
           </dl>
           <figure className="hero__portrait">
             <img
-              src={profile.portrait}
+              {...getResponsiveImageProps(profile.portrait, imageSizes.portrait)}
               alt={locale === "zh" ? "冯晨晨头像" : "Portrait of Chenchen Feng"}
               decoding="async"
             />
