@@ -20,6 +20,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Audit all dependencies
+        run: npm audit
       - run: npx playwright install --with-deps chromium
       - run: npm run check:images
       - run: npm run build

@@ -103,7 +103,7 @@
       ],
       "priority": 7,
       "passes": false,
-      "notes": ""
+      "notes": "Implementation ready; awaiting supervisor browser/release verification. Clean npm ci, full npm audit (zero), build, content/fixtures, image reproducibility and all32 browser tests passed."
     }
   ]
 }

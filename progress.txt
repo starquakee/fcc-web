@@ -174,3 +174,48 @@ Baseline: b84802f (origin/main)
 - GitHub Actions run https://github.com/starquakee/fcc-web/actions/runs/42392893758 completed successfully on Linux, including clean install, reproducible image generation, build, content/negative fixtures and full browser suite.
 - All14 live HTTP checks passed: eight routes including query preservation, robots/sitemap, PDF/JPEG MIME types and missing-static-file404s.
 - US-006 passes=true. US-007 is the only remaining story.
+
+## 2026-11-08 - US-007 implementation; clean install/local validation blocked
+- Selected US-007, the only passes=false story. Updated only package.json, package-lock.json, .github/workflows/validate.yml, tests/README.md and the required prd.json/progress.txt handoff. Application code, both locales, styles, assets, routes and deferred project links are unchanged.
+- Baseline full npm audit reported 12 vulnerable packages (9 high, 1 moderate, 2 low), comprising 39 advisory entries plus react-router-dom's propagated react-router finding. Reviewed all entries, including build/dev-only paths; no severity filters, production-only exclusions, overrides or forced fixes were used.
+
+| Package / dependency path | Locked version before -> after | Reviewed findings |
+| --- | --- | --- |
+| @babel/core via @vitejs/plugin-react | 7.29.0 -> 7.29.13 | sourceMappingURL arbitrary file read |
+| baseline-browser-mapping via browserslist/Babel | 2.10.0 -> 2.11.35 | process termination on invalid input |
+| browserslist via Babel | 4.28.1 -> 4.29.5 | unbounded query cache; custom stats crash/prototype write |
+| esbuild, standalone and Vite | 0.27.3 -> 0.28.2 | Windows development-server file read |
+| immutable via Sass | 5.1.5 -> 5.1.9 | Map/Set hash-collision DoS; List trie overflow DoS |
+| nanoid via PostCSS | 3.3.11 -> 3.3.20 | negative/zero size loops; integer overflow |
+| picomatch via Vite/tinyglobby | 4.0.3 -> 4.0.7 | POSIX class method injection; extglob ReDoS |
+| postcss via Vite | 8.5.8 -> 8.5.32 | CSS stringify XSS; source-map file disclosure including incomplete fixes |
+| react-router | 7.13.1 -> 7.18.5 | turbo-stream constructor invocation; RSC redirect XSS; manifest/single-fetch/matching DoS; document/RSC CSRF; backslash and protocol-relative open redirects; RSC protocol validation; SSR error constructor injection; prerender redirect XSS |
+| react-router-dom | 7.13.1 -> 7.18.5 | propagated react-router findings |
+| source-map-js via Sass/PostCSS | 1.2.1 -> 1.2.2 | indexed source-map offset event-loop DoS |
+| vite | 7.3.1 -> 7.3.7 | optimized-deps traversal; fs.deny query/Windows path bypasses; WebSocket file read; launch-editor UNC disclosure, percent escaping, flag injection and existence-check bypass; middleware cross-origin script execution; fs.allow path collisions |
+
+- Direct dependency minimums now require esbuild ^0.28.2, Vite ^7.3.7 and react-router-dom ^7.18.5. React/react-dom remain exactly 19.2.4 in the lockfile; Router and Vite remain on major 7. Vite 7.3.7 explicitly permits esbuild ^0.27.0 || ^0.28.0, so both consumers share the single fixed 0.28.2 package without an override or vulnerable nested copy. No React/Router/Vite major migration is needed for the current audit findings.
+- The targeted transitive refresh also updates Babel helpers, browser compatibility data, semver 6 and set-cookie-parser 2 within their existing major versions. All package-path entries and 26 optional esbuild platform packages are preserved. Sharp 0.35.5, Playwright 1.65.0, TypeScript, Sass, Rollup, the React plugin, fonts and other direct dependency declarations remain unchanged. No generated images were rewritten.
+- Added an ordinary npm audit step immediately after npm ci in GitHub Actions, with its default failure behavior for any finding and no continue-on-error. tests/README.md documents the same full audit gate and the retained framework majors. CI execution is still pending supervisor release.
+- Successful lockfile update commands (all used the existing ignored temporary npm cache):
+  - npm install --package-lock-only --save-dev 'esbuild@^0.28.2' 'vite@^7.3.7' --cache .npm-cache.local --no-audit --no-fund --fetch-retries=0 --fetch-timeout=30000
+  - npm install --package-lock-only 'react-router-dom@^7.18.5' --cache .npm-cache.local --no-audit --no-fund --fetch-retries=0 --fetch-timeout=30000
+  - npm update --package-lock-only @babel/core baseline-browser-mapping browserslist immutable nanoid picomatch postcss source-map-js --cache .npm-cache.local --no-audit --no-fund --fetch-retries=0 --fetch-timeout=30000
+- npm audit --json --cache .npm-cache.local --fetch-retries=0 --fetch-timeout=30000: PASSED after updates, exit 0, empty vulnerabilities object, all severity counts zero. This establishes the updated lockfile audit result; it does not establish a successful install or runtime validation. The --no-audit flag on the three update commands only avoided duplicate network audits; the separate full audit ran without exclusions.
+- Focused read-only Node assertions: PASSED for package.json/lockfile dependency agreement, retained React/Router/Vite majors, no overrides, one fixed esbuild, all 26 matching optional esbuild binaries, preserved package entries, unchanged unrelated direct declarations/pinned tools, and registry/integrity metadata on every dependency. No test dependency was added.
+- npm ci --cache .npm-cache.local --no-fund --fetch-retries=0 --fetch-timeout=30000: FAILED/BLOCKED (exit 1), EPERM unlink of C:\Users\75228\AppData\Local\Temp\fcc-web-site-audit-fixes\node_modules\@esbuild\win32-x64\esbuild.exe. Verified node_modules resolves within this workspace before the clean install. Windows may be denying removal because the executable is in use or due to permissions; the cause is not proven. No process was killed, protected file removed manually, or permission boundary bypassed.
+- Important recovery gotcha: npm ci removed other dependencies before reaching the denied executable, leaving node_modules incomplete. The supervisor must restore it with a successful clean install before running validation; previous installed-tree evidence cannot be reused for these dependency changes.
+- npm run build: FAILED/BLOCKED (exit 1), 'tsc' is not recognized. Neither typecheck nor Vite build executed; no fresh production build was generated.
+- npm run check:content: FAILED/BLOCKED (exit 1), ERR_MODULE_NOT_FOUND for esbuild. No content/fixture assertions executed.
+- npm run test:e2e: FAILED/BLOCKED (exit 1), 'playwright' is not recognized. No server or browser test ran. Browser installation, check:images and focused content launcher targets were NOT RUN after the incomplete install. No repeat attempts at the previously documented esbuild ancestor-directory boundary were made.
+- git diff --check: PASSED. The existing user-global Git ignore permission warning persists; workspace diff inspection works. Temporary npm cache/logs remain ignored and are not part of the diff.
+- Compatibility references reviewed: https://github.com/evanw/esbuild/blob/main/CHANGELOG.md (0.28.1 Windows fix and 0.28.2 patch); https://github.com/vitejs/vite/blob/v7.3.7/packages/vite/CHANGELOG.md (7.3.6 permits esbuild 0.28, 7.3.7 security-related backports); https://reactrouter.com/7.18.5/changelog (7.x security and regression fixes); https://docs.npmjs.com/cli/v10/commands/npm-audit/ (default full audit and failure behavior). The known server/SSR/RSC-only advisory paths were still remediated; no claim is made that every advisory was exploitable in this static SPA.
+- Supervisor next: resolve the esbuild executable lock/permission issue through reviewed execution, then run npm ci --cache .npm-cache.local --no-fund --fetch-retries=0 --fetch-timeout=30000, npm audit, npm run check:images, npm run build, npm run check:content, npm run test:e2e and git diff --check. Verify all 32 browser cases and accepted bilingual/mobile/desktop behavior, then perform the authorized commit/push, GitHub CI audit/build/test gate verification, matching Vercel deployment and live route/asset/download/missing-static-404 smoke checks. Do not treat the old dist output or the zero-finding lockfile audit as runtime/release evidence.
+- US-007 remains passes=false and its notes explicitly record incomplete local validation. The ready/awaiting-supervisor-verification note was not set. No commit, push, additional worktree, agent/worker, browser/production validation, or completion promise occurred.
+
+## 2026-11-08 - US-007 supervisor local verification
+- Confirmed the esbuild executable was held by this task's earlier Vite preview on4180, via exact executable path and parent PID. Stopped that task-only preview; its esbuild child exited with it.
+- Fresh npm ci succeeded; full npm audit reports zero vulnerabilities. Production build with Vite7.3.7/esbuild0.28.2, app/tooling typechecks, all content/negative fixtures and byte-for-byte image regeneration passed.
+- Full Chromium desktop/mobile suite passed32/32 in20.4s, covering both locales, actual PDF bytes, all notes, metadata, routing and persistence. git diff --check passed.
+- Reviewed retained React19/Router7/Vite7 and dependency-only scope; plain npm audit CI gate has no exclusions, severity filter or override.
+- Awaiting release, matching Vercel deployment, GitHub CI and production smoke checks. passes remains false.
