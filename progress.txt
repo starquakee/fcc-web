@@ -168,3 +168,9 @@ Baseline: b84802f (origin/main)
 - Production build and tooling typechecks, full content checks including negative fixtures, image byte reproducibility, and git diff --check passed.
 - Initial browser run exposed a test selector mismatch: CSS contributes a decorative arrow to the back-link accessible name. Corrected the localized, main-scoped role selector without changing UI. Full rerun: 32/32 desktop/mobile Chromium cases passed in21.4s, including both locales, actual PDF download bytes, note text/images, metadata and language persistence.
 - Awaiting authorized push, GitHub CI and matching Vercel/production checks; passes remains false.
+
+## 2026-11-08 - US-006 production and CI verified
+- Fix commit6e862bd0d78fe3f06fdf2a921fedbec72d9a759b pushed to main and remote SHA confirmed. Matching Vercel status success.
+- GitHub Actions run https://github.com/starquakee/fcc-web/actions/runs/42392893758 completed successfully on Linux, including clean install, reproducible image generation, build, content/negative fixtures and full browser suite.
+- All14 live HTTP checks passed: eight routes including query preservation, robots/sitemap, PDF/JPEG MIME types and missing-static-file404s.
+- US-006 passes=true. US-007 is the only remaining story.
