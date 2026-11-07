@@ -89,3 +89,9 @@ Baseline: b84802f (origin/main)
 - All 23 article image elements had dimensions; 21 still-unloaded images each already reserved 358.4 x 202.3 CSS px on mobile.
 - Three-run matched Lighthouse mobile notes baseline score 86/81/83 (median83), LCP4064/4809/4357ms (median4357), CLS0. After score96/96/95 (median96), LCP2409/2487/2559ms (median2487), CLS0. Reports outside repository.
 - Awaiting production verification; passes remains false.
+
+## 2026-11-08 - US-003 production verified
+- Fix commit 0defdeefefa49cee864dcf54ad3a5e480954f0e0 pushed to main; matching Vercel deployment success.
+- All 31 public WebP URLs returned image/webp and byte-for-byte matched the validated local variants. Direct Node fetch hit connection timeouts; curl through the configured network proxy completed all31 checks with zero failures. No website failure was masked.
+- Confirmed live first-cover full-size Content-Length64752, HTTP200. Local mobile/desktop and both locale image checks passed, with original source assets unchanged.
+- US-003 passes=true. Next is original audit item5, bilingual note split (US-004); project-links item4 stays deferred.

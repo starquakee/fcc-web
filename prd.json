@@ -44,8 +44,8 @@
         "Build, content checks, and production verification pass"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": "Build/content/image reproducibility and mobile/desktop bilingual visual checks passed. 3-run mobile notes median performance 83->96 and LCP 4357->2487 ms; awaiting production verification."
+      "passes": true,
+      "notes": "Released 0defdee; Vercel success; all31 live WebP byte/MIME checks passed. Median mobile notes score83->96, LCP4357->2487ms, CLS0; largest cover64752B."
     },
     {
       "id": "US-004",
