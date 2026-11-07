@@ -1,10 +1,9 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import type { RouteId, RouteMeta } from "../routeManifest";
 import { getRouteMeta } from "../routeManifest";
 import { useLanguage } from "../i18n";
-
-const SITE_ORIGIN = "https://starquake.top";
-const DEFAULT_IMAGE = "/media/profile-photo.jpg";
+import { siteConfig } from "../siteConfig";
 
 export type DocumentMetaOptions = Partial<RouteMeta> & {
   route: RouteId;
@@ -45,19 +44,20 @@ function updateCanonicalLink(href: string) {
 }
 
 function toAbsoluteUrl(path: string) {
-  return new URL(path, SITE_ORIGIN).href;
+  return new URL(path, siteConfig.origin).href;
 }
 
 export function useDocumentMeta({ route, params, title, description, image, canonicalPath, type }: DocumentMetaOptions) {
   const { locale } = useLanguage();
+  const { pathname } = useLocation();
   const routeMeta = getRouteMeta(route, locale, params);
   const resolvedTitle = title ?? routeMeta.title;
   const resolvedDescription = description ?? routeMeta.description;
-  const resolvedImage = image ?? routeMeta.image ?? DEFAULT_IMAGE;
+  const resolvedImage = image ?? routeMeta.image ?? siteConfig.defaultImage;
   const resolvedType = type ?? routeMeta.type ?? "website";
+  const canonicalUrl = toAbsoluteUrl(canonicalPath ?? pathname);
 
   useEffect(() => {
-    const canonicalUrl = toAbsoluteUrl(canonicalPath ?? window.location.pathname);
     const imageUrl = toAbsoluteUrl(resolvedImage);
 
     document.title = resolvedTitle;
@@ -65,11 +65,12 @@ export function useDocumentMeta({ route, params, title, description, image, cano
     updateMeta('meta[property="og:title"]', resolvedTitle);
     updateMeta('meta[property="og:description"]', resolvedDescription);
     updateMeta('meta[property="og:type"]', resolvedType);
+    updateMeta('meta[property="og:url"]', canonicalUrl);
     updateMeta('meta[property="og:image"]', imageUrl);
     updateMeta('meta[name="twitter:card"]', "summary_large_image");
     updateMeta('meta[name="twitter:title"]', resolvedTitle);
     updateMeta('meta[name="twitter:description"]', resolvedDescription);
     updateMeta('meta[name="twitter:image"]', imageUrl);
     updateCanonicalLink(canonicalUrl);
-  }, [canonicalPath, resolvedDescription, resolvedImage, resolvedTitle, resolvedType]);
+  }, [canonicalUrl, resolvedDescription, resolvedImage, resolvedTitle, resolvedType]);
 }

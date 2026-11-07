@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { parseNoteMarkdown } from "../src/lib/noteMarkdown";
 import { getMemoryDetail, listMemory } from "../src/content/memoryCatalog";
@@ -152,16 +152,63 @@ function checkSiteTextShape() {
 
 function checkDocumentMetaShape() {
   const hookSource = readFileSync("src/hooks/useDocumentMeta.ts", "utf8");
-  const indexSource = readFileSync("index.html", "utf8");
+  const builtHtml = readFileSync("dist/index.html", "utf8");
 
   assert(hookSource.includes("DocumentMetaOptions"), "useDocumentMeta should expose an object options interface");
   assert(hookSource.includes('meta[property="og:image"]'), "useDocumentMeta should update og:image");
+  assert(hookSource.includes('meta[property="og:url"]'), "useDocumentMeta should update og:url");
   assert(hookSource.includes('meta[name="twitter:card"]'), "useDocumentMeta should update twitter:card");
   assert(hookSource.includes('link[rel="canonical"]'), "useDocumentMeta should update canonical link");
-  assert(
-    indexSource.includes("https://starquake.top/media/profile-photo.jpg"),
-    "index.html should use an absolute default og:image",
-  );
+
+  function readHeadUrl(tag: "meta" | "link", key: string, value: string, attribute: string) {
+    const tags = [...builtHtml.matchAll(new RegExp(`<${tag}\\b[^>]*>`, "g"))];
+    const matches = tags.filter(([markup]) => markup.includes(`${key}="${value}"`));
+    assert(matches.length === 1, `built HTML should have exactly one ${value} tag`);
+    return matches[0][0].match(new RegExp(`${attribute}="([^"]*)"`))?.[1];
+  }
+
+  const homeUrl = new URL(routeManifest.home.path, siteConfig.origin).href;
+  const homeMeta = getRouteMeta("home", "en");
+  const defaultImageUrl = new URL(homeMeta.image ?? siteConfig.defaultImage, siteConfig.origin).href;
+  assert(readHeadUrl("link", "rel", "canonical", "href") === homeUrl, "initial canonical should use the approved origin");
+  assert(readHeadUrl("meta", "property", "og:url", "content") === homeUrl, "initial og:url should match canonical");
+  assert(readHeadUrl("meta", "property", "og:image", "content") === defaultImageUrl, "initial og:image should use the shared default");
+  assert(readHeadUrl("meta", "name", "twitter:image", "content") === defaultImageUrl, "initial Twitter image should match og:image");
+  assert(readHeadUrl("meta", "name", "twitter:card", "content") === "summary_large_image", "initial Twitter card should be present");
+  assert(builtHtml.includes(`<title>${homeMeta.title}</title>`), "initial title should come from the home route metadata");
+
+  const imagePaths = new Set<string>([siteConfig.defaultImage]);
+  for (const locale of ["en", "zh"] as const) {
+    for (const routeId of Object.keys(routeManifest) as Array<keyof typeof routeManifest>) {
+      imagePaths.add(getRouteMeta(routeId, locale).image ?? siteConfig.defaultImage);
+    }
+    for (const entry of listMemory(locale)) {
+      if (!getMemoryDetail(locale, entry.slug)) continue;
+      const meta = getRouteMeta("memoryDetail", locale, { slug: entry.slug });
+      assert(meta.type === "article", `${locale}/${entry.slug} should have article metadata`);
+      assert(meta.image === entry.image, `${locale}/${entry.slug} should use its note cover for sharing`);
+      imagePaths.add(meta.image ?? siteConfig.defaultImage);
+    }
+  }
+  for (const imagePath of imagePaths) {
+    const url = new URL(imagePath, siteConfig.origin);
+    assert(url.origin === siteConfig.origin, `share image should use the approved origin: ${imagePath}`);
+    const assetPath = decodeURIComponent(url.pathname);
+    const original = readFileSync(join("public", assetPath));
+    const built = readFileSync(join("dist", assetPath));
+    const isJpeg = original.subarray(0, 3).toString("hex") === "ffd8ff";
+    const isPng = original.subarray(0, 8).toString("hex") === "89504e470d0a1a0a";
+    const isWebp = original.toString("ascii", 0, 4) === "RIFF" && original.toString("ascii", 8, 12) === "WEBP";
+    assert(isJpeg || isPng || isWebp, `share asset should contain image bytes: ${imagePath}`);
+    assert(original.equals(built), `build should preserve the share image: ${imagePath}`);
+  }
+
+  const bundleFiles = readdirSync("dist/assets").filter((file) => file.endsWith(".js"));
+  assert(bundleFiles.length > 0, "metadata checks require a built application bundle");
+  for (const file of ["dist/index.html", ...bundleFiles.map((file) => join("dist/assets", file))]) {
+    assert(!readFileSync(file, "utf8").includes("starquake.top"), `${file} should not contain the obsolete metadata origin`);
+  }
+  console.log(`Metadata checks passed: initial HTML, both locales, ${imagePaths.size} share images, and built origin references.`);
 }
 
 function checkImageLoadingShape() {

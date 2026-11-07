@@ -30,7 +30,7 @@
       ],
       "priority": 2,
       "passes": false,
-      "notes": ""
+      "notes": "Supervisor build/content/meta checks and 16 route-locale browser metadata cases passed; awaiting production verification."
     },
     {
       "id": "US-003",
