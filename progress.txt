@@ -60,3 +60,9 @@ Baseline: b84802f (origin/main)
 - Browser verified all 8 valid paths in both English and Chinese (16 cases): correct canonical and og:url on approved origin, correct origin on share images, nonempty localized document titles.
 - Initial HTML includes one set of generated metadata and 4 share images have matching source/build image bytes.
 - Awaiting production deployment verification; passes remains false.
+
+## 2026-11-07 - US-002 production verified
+- Fix commit: 0f30b82d55807312b96f30bffdca1e4ae5e57ed6. Pushed main, matching Vercel status success.
+- Live initial HTML canonical/OG/Twitter image URLs use https://www.fengchenchen.top. Four share images returned 200 with correct JPEG/PNG/WebP types.
+- Live browser /publications?check=metadata#main-content retained its URL and rendered localized title; canonical correctly excluded query/hash and used the new domain; default share image used the new domain.
+- US-002 passes=true. Worker instructions clarify no nested workers and supervisor-owned browser/Lighthouse checks.

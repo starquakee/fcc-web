@@ -29,8 +29,8 @@
         "Build, content checks, browser, and production verification pass"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": "Supervisor build/content/meta checks and 16 route-locale browser metadata cases passed; awaiting production verification."
+      "passes": true,
+      "notes": "Released 0f30b82; Vercel success. 16 local route/locale cases, live canonical with query/hash excluded, initial HTML metadata and all 4 live share image URLs passed."
     },
     {
       "id": "US-003",
