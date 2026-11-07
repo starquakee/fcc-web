@@ -34,3 +34,10 @@ Baseline: b84802f (origin/main)
 - Reviewed execution passed npm run build, npm run check:content, npm run check:content -- crawl, and git diff --check.
 - Browser: /cv?p=keep&check=route#main-content survived refresh and switch from Chinese to English; CV rendered and no horizontal overflow.
 - Pending real Vercel deployment and production endpoint verification; passes remains false.
+
+## 2026-11-07 - US-001 production verified
+- Fix commit: 0ab037268e3fb1fae26547f7481f1b560ef28bf2, pushed to origin/main. GitHub Vercel status: success.
+- All 14 production endpoint checks passed: home + primary routes + three note slugs 200; query retained; robots text/plain and sitemap application/xml with 8 unique new-origin URLs; PDF application/pdf and portrait image/jpeg; deliberately missing media/docs 404.
+- Source query/hash browser behavior verified before release; live browser tab loaded the matching CV title/URL, but full iframe accessibility capture timed out, so no additional live DOM claim is made.
+- Three unchanged mobile Lighthouse notes-page baselines captured outside source: scores 86/81/83, LCP 4064/4809/4357 ms, CLS 0; median score 83 and LCP 4357 ms.
+- US-001 passes=true.

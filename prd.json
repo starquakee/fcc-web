@@ -15,8 +15,8 @@
         "Build, content checks, and production verification pass"
       ],
       "priority": 1,
-      "passes": false,
-      "notes": "Local build/content/crawl checks and bilingual browser refresh with query/hash passed under supervisor; awaiting production verification."
+      "passes": true,
+      "notes": "Released as 0ab0372. Vercel success; all 14 production HTTP checks passed, including 8 routes, robots/sitemap, MIME types and missing asset 404s. Local bilingual refresh preserved query/hash."
     },
     {
       "id": "US-002",
