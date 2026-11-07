@@ -1,0 +1,18 @@
+# Ralph Progress: Portfolio audit fixes
+
+Started: 2026-11-07 Asia/Shanghai
+Source PRD: tasks/prd-site-audit-fixes.md
+Baseline: b84802f (origin/main)
+
+## Codebase Patterns
+- React 19 + TypeScript + Vite 7, SCSS and bilingual content; no framework migration.
+- Production is Vercel at https://www.fengchenchen.top, not the obsolete GitHub Pages origin.
+- Use the existing route manifest and memory catalog as the sources of truth.
+- Original issue 4 (project links) is deferred, not an incomplete story in this run.
+- Supervisor performs release commits/pushes and verifies production before passes=true.
+- Preserve the original worktree's unrelated untracked .agents/.
+
+## 2026-11-07 - Bootstrap
+- Created clean codex/site-audit-fixes worktree and seven ordered stories.
+- Git Bash, Node, Git, GitHub CLI, and logged-in Codex CLI confirmed available.
+- Normal pushes target origin/main; no force pushes or unsafe execution.
