@@ -59,7 +59,7 @@
       ],
       "priority": 4,
       "passes": false,
-      "notes": ""
+      "notes": "Supervisor build/content checks, original-section comparison (line ending/trailing whitespace normalized), and bilingual same-route browser checks passed; awaiting production."
     },
     {
       "id": "US-005",

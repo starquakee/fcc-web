@@ -39,7 +39,7 @@ export const memoryNotesByLocale: Record<Locale, MemoryNote[]> = {
       detailImage: "/media/notes/henpri/freedom.jpg",
       assetBasePath: "/media/notes/henpri",
       tags: ["Visual Novel", "Storytelling", "Game Notes"],
-      contentPath: "/notes/henpri.md",
+      contentPath: "/notes/henpri-en.md",
     },
   ],
   zh: [
@@ -76,7 +76,7 @@ export const memoryNotesByLocale: Record<Locale, MemoryNote[]> = {
       detailImage: "/media/notes/henpri/freedom.jpg",
       assetBasePath: "/media/notes/henpri",
       tags: ["视觉小说", "叙事", "游戏笔记"],
-      contentPath: "/notes/henpri.md",
+      contentPath: "/notes/henpri-zh.md",
     },
   ],
 };
