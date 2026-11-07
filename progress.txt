@@ -112,3 +112,9 @@ Baseline: b84802f (origin/main)
 - Compared new bodies to the prior Git version at the existing language boundary: both preserve all prose and image order, normalizing only line endings/trailing whitespace and excluding the bilingual preface/separator.
 - 390px browser: Chinese first heading/body and12 images; switching to EN on the same /memory/hentai-prison-note path renders the English first heading/body and11 images. Obsolete preface absent, no horizontal overflow.
 - Awaiting production raw-document equality and route checks; passes remains false.
+
+## 2026-11-08 - US-004 production verified
+- Fix commit eb399942c0f7d53ec4b780f6250c8677dac185bb pushed main; Vercel success.
+- Live English11691 B and Chinese13112 B documents match committed Git blobs exactly. Initial local-byte comparison exposed only autocrlf working-copy line endings; normalized local comparison and exact committed comparison both pass.
+- Existing /memory/hentai-prison-note route remains HTTP200; local browser switches the body on the unchanged slug.
+- US-004 passes=true. Next is original issue6 (US-005), CV and language accessibility.

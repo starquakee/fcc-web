@@ -58,8 +58,8 @@
         "Build, content checks, browser, and production verification pass"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": "Supervisor build/content checks, original-section comparison (line ending/trailing whitespace normalized), and bilingual same-route browser checks passed; awaiting production."
+      "passes": true,
+      "notes": "Released eb39994; Vercel success. Both live localized documents exactly match committed Git blobs; article route200; same-route language switch and original text/image preservation verified."
     },
     {
       "id": "US-005",
