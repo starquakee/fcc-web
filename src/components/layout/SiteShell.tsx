@@ -4,6 +4,7 @@ import { profilesByLocale } from "../../content/profile";
 import { siteText } from "../../content/siteText";
 import { useVisitCounter } from "../../hooks/useVisitCounter";
 import { useLanguage } from "../../i18n";
+import { withoutSentenceStops } from "../../lib/text";
 import { getRouteLabel, getRoutePath, primaryRouteIds, routeManifest } from "../../routeManifest";
 import styles from "./SiteShell.module.scss";
 
@@ -13,6 +14,9 @@ export function SiteShell() {
   const text = siteText[locale];
   const profile = profilesByLocale[locale];
   const { count, hasError, isLocalPreview } = useVisitCounter();
+  const formatCounterMessage = location.pathname === getRoutePath("home")
+    ? withoutSentenceStops
+    : (message: string) => message;
   const primaryLinks = primaryRouteIds.map((routeId) => ({
     to: getRoutePath(routeId),
     label: getRouteLabel(routeId, locale),
@@ -28,9 +32,9 @@ export function SiteShell() {
     count !== null
       ? `${text.footer.visits}: ${new Intl.NumberFormat(locale === "zh" ? "zh-CN" : "en-US").format(count)}`
       : isLocalPreview
-        ? text.footer.visitsPreview
+        ? formatCounterMessage(text.footer.visitsPreview)
         : hasError
-          ? text.footer.visitsUnavailable
+          ? formatCounterMessage(text.footer.visitsUnavailable)
           : `${text.footer.visits}: ...`;
 
   return (

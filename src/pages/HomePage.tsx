@@ -4,12 +4,12 @@ import { Reveal } from "../components/ui/Reveal";
 import { TimelineSection } from "../components/ui/TimelineSection";
 import { socialLinksByLocale } from "../content/links";
 import { profilesByLocale } from "../content/profile";
-import { projectsByLocale } from "../content/projects";
 import { publicationsByLocale } from "../content/publications";
 import { siteText } from "../content/siteText";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLanguage } from "../i18n";
 import { getResponsiveImageProps, imageSizes } from "../lib/responsiveImages";
+import { withoutSentenceStops } from "../lib/text";
 
 function formatIndex(value: number) {
   return String(value).padStart(2, "0");
@@ -21,8 +21,6 @@ export function HomePage() {
   const profile = profilesByLocale[locale];
   const socialLinks = socialLinksByLocale[locale];
   const publications = publicationsByLocale[locale];
-  const projects = projectsByLocale[locale];
-  const selectedProjects = projects.slice(0, 2);
 
   useDocumentMeta({
     route: "home",
@@ -35,7 +33,7 @@ export function HomePage() {
     },
     {
       label: locale === "zh" ? "当前状态" : "Currently",
-      value: profile.availability,
+      value: withoutSentenceStops(profile.availability),
     },
     {
       label: locale === "zh" ? "联系方式" : "Contact",
@@ -50,7 +48,7 @@ export function HomePage() {
           <span className="hero__location mono-label">{profile.location}</span>
         </Reveal>
         <h1 className="hero__title">
-          {profile.heroTitle.split("\n").map((line, i) => (
+          {withoutSentenceStops(profile.heroTitle).split("\n").map((line, i) => (
             <span key={i} className="line-mask">
               <span className="line" style={{ "--line-i": i } as CSSProperties}>
                 {line}
@@ -89,7 +87,7 @@ export function HomePage() {
         <Reveal className="section-header">
           <h2 className="section-header__title">{text.home.selectedWorkTitle}</h2>
           <span className="section-header__meta">
-            {formatIndex(publications.length + selectedProjects.length)}
+            {formatIndex(publications.length)}
           </span>
         </Reveal>
         <Reveal stagger={90} className="work-index">
@@ -100,7 +98,7 @@ export function HomePage() {
               eyebrow={text.common.publication}
               title={publication.title}
               subtitle={publication.venue}
-              summary={publication.summary}
+              summary={withoutSentenceStops(publication.summary)}
               tags={publication.tags}
               meta={publication.year}
               tagsLabel={text.common.tags}
@@ -108,19 +106,6 @@ export function HomePage() {
                 { label: text.common.readPaper, href: publication.pdfUrl },
                 ...(publication.codeUrl ? [{ label: text.common.code, href: publication.codeUrl }] : []),
               ]}
-            />
-          ))}
-          {selectedProjects.map((project, i) => (
-            <WorkCard
-              key={project.slug}
-              index={formatIndex(publications.length + i + 1)}
-              eyebrow={text.common.project}
-              title={project.title}
-              subtitle={project.subtitle}
-              summary={project.summary}
-              tags={project.stack}
-              tagsLabel={text.common.tags}
-              links={project.links}
             />
           ))}
         </Reveal>
@@ -134,10 +119,10 @@ export function HomePage() {
           {profile.focusAreas.map((area) => (
             <article key={area.title} className="focus-col">
               <h3>{area.title}</h3>
-              <p>{area.description}</p>
+              <p>{withoutSentenceStops(area.description)}</p>
               <ul>
                 {area.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
+                  <li key={bullet}>{withoutSentenceStops(bullet)}</li>
                 ))}
               </ul>
             </article>
@@ -151,7 +136,10 @@ export function HomePage() {
         </Reveal>
         <Reveal>
           <TimelineSection
-            entries={profile.timeline}
+            entries={profile.timeline.map((entry) => ({
+              ...entry,
+              body: entry.body.map(withoutSentenceStops),
+            }))}
             experienceLabel={text.common.experience}
             educationLabel={text.common.education}
           />

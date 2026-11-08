@@ -105,7 +105,7 @@ for (const locale of ["en", "zh"] as const) {
         const url = `${path}?smoke=refresh#main-content`;
         await page.goto(url, { waitUntil: "domcontentloaded" });
         await expectLocale(page, locale);
-        const heading = route === "home" ? profilesByLocale[locale].heroTitle.replace(/\n/g, "") : siteText[locale][route].title;
+        const heading = route === "home" ? profilesByLocale[locale].heroTitle.replace(/\n|。|\.$/g, "") : siteText[locale][route].title;
         await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
         await expectMetadata(page, route, locale);
         await page.reload({ waitUntil: "domcontentloaded" });

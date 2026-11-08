@@ -35,13 +35,13 @@ export const profilesByLocale: Record<Locale, Profile> = {
         ],
       },
       {
-        title: "LLM Applications",
+        title: "Harness Developments",
         description:
-          "Building RAG pipelines and agentic tooling that keep retrieval traceable, resilient, and usable in research workflows.",
+          "Building the runtime around LLM agents, with a focus on execution loops, context management, and reliable tool use",
         bullets: [
-          "Citation-grounded retrieval systems",
-          "Parallel agent workflows for speed and coverage",
-          "Graceful degradation for long-running document tasks",
+          "Agent orchestration and tool-use workflows",
+          "Context and state management for long-running tasks",
+          "Failure recovery, observability, and evaluation",
         ],
       },
     ],
@@ -123,9 +123,9 @@ export const profilesByLocale: Record<Locale, Profile> = {
         bullets: ["元层参数与策略进化", "个体层策略多样性", "面向复杂黑盒问题的基准评测"],
       },
       {
-        title: "LLM Applications",
-        description: "构建可追踪、可用、能在研究流程里真正落地的 RAG 与多智能体系统。",
-        bullets: ["带引用追踪的检索系统", "多智能体协作工作流", "面向长任务的降级与稳定性设计"],
+        title: "Harness Developments",
+        description: "构建 LLM Agent 的运行环境，关注执行循环、上下文管理与可靠的工具调用",
+        bullets: ["Agent 编排与工具调用流程", "长任务的上下文与状态管理", "失败恢复、运行观测与评估"],
       },
     ],
     timeline: [
